@@ -356,8 +356,8 @@ function lectura(cappermaster) {
               }
               capsorterresults = {
                 ST: Capsorterestado,
-                CPQO:  CntOutCapsorter,
-                SP: capsorterspeed
+                CPQO:  null,
+                SP: null
               }
               if (capsorterflagPrint == 1) {
                 for (var key in capsorterresults) {
@@ -986,11 +986,11 @@ function lectura(cappermaster) {
                 SP: palletizerspeed
               }
               if (palletizerflagPrint == 1) {
-                for (var key in palletizerresults) {
+                /*for (var key in palletizerresults) {
                   if( palletizerresults[key] != null && ! isNaN(palletizerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_palletizer_l5.log', 'tt=' + palletizertime + ',var=' + key + ',val=' + palletizerresults[key] + '\n')
-                }
+                }*/
                 palletizerflagPrint = 0
                 palletizersecStop = 0
                 palletizertime = Date.now()
@@ -1135,11 +1135,11 @@ function lectura(cappermaster) {
                 SP: spiralconveyorspeed
               }
               if (spiralconveyorflagPrint == 1) {
-                for (var key in spiralconveyorresults) {
+                /*for (var key in spiralconveyorresults) {
                   if( spiralconveyorresults[key] != null && ! isNaN(spiralconveyorresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_spiralconveyor_l5.log', 'tt=' + spiralconveyortime + ',var=' + key + ',val=' + spiralconveyorresults[key] + '\n')
-                }
+                }*/
                 spiralconveyorflagPrint = 0
                 spiralconveyorsecStop = 0
                 spiralconveyortime = Date.now()
