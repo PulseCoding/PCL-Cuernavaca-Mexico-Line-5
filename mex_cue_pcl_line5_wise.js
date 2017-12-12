@@ -44,283 +44,197 @@ var SpiralconveyorStatus = "Spiral Conveyor.Status.";
 
 
 var Capfeederestado = 0,
-  initialTimeCapfeeder = Date.now(),
-  Capfeedertime = 0,
-  CapfeederflagPrint = 0,
-  Capfeedermaster;
+    initialTimeCapfeeder = Date.now(),
+    Capfeedertime = 0,
+    CapfeederflagPrint = 0,
+    Capfeedermaster;
 
 
-var Capsorterct = null,
-  Capsorterresults = null,
-  Capsorteractual = 0,
-  Capsortertime = 0,
-  Capsortersec = 0,
-  CapsorterflagStopped = false,
-  Capsorterstate = 0,
-  Capsorterspeed = 0,
-  CapsorterspeedTemp = 0,
-  CapsorterflagPrint = 0,
-  CapsortersecStop = 0,
-  CapsorterONS = 0,
-  CapsortertimeStop = 50, //NOTE: Timestop
-  CapsorterWorktime = 15, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  CapsorterflagRunning = false,
-  CntInCapsorter = null,
-  CntOutCapsorter = null;
+var capsorterct = null,
+    capsorterresults = null,
+    capsorteractual = 0,
+    capsortertime = 0,
+    capsortersec = 0,
+    capsorterflagStopped = false,
+    capsorterstate = 0,
+    capsorterspeed = 0,
+    capsorterspeedTemp = 0,
+    capsorterflagPrint = 0,
+    capsortersecStop = 0,
+    capsorterONS = false,
+    capsortertimeStop = 60, //NOTE: Timestop
+    capsorterWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    capsorterflagRunning = false;
 var CntOutCapsorter = 0,
-  Capsorterestado = 0,
-  initialTimeCapsorter = Date.now(),
-  Capsortertime = 0,
-  CapsorterflagPrint = 0,
-  Capsortermaster;
-
-
-
-var Capperct = null,
-  Capperresults = null,
-  Capperactual = 0,
-  Cappertime = 0,
-  Cappersec = 0,
-  CapperflagStopped = false,
-  Capperstate = 0,
-  Capperspeed = 0,
-  CapperspeedTemp = 0,
-  CapperflagPrint = 0,
-  CappersecStop = 0,
-  CapperONS = 0,
-  CappertimeStop = 50, //NOTE: Timestop
-  CapperWorktime = 30, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  CapperflagRunning = false,
-  CntInCapper = null,
-  CntOutCapper = null;
+    Capsorterestado = 0;
+var capperct = null,
+    capperresults = null,
+    CntOutCapper = null,
+    capperactual = 0,
+    cappertime = 0,
+    cappersec = 0,
+    capperflagStopped = false,
+    capperstate = 0,
+    capperspeed = 0,
+    capperspeedTemp = 0,
+    capperflagPrint = 0,
+    cappersecStop = 0,
+    capperONS = false,
+    cappertimeStop = 60, //NOTE: Timestop
+    capperWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    capperflagRunning = false;
 var CntInCapper1 = 0,
-  CntInCapper2 = 0,
-  CntOutCapper = 0,
-  CntRjCapper = 0,
-  Capperestado = 0,
-  initialTimeCapper = Date.now(),
-  Cappertime = 0,
-  CapperflagPrint = 0,
-  cappermaster;
-
-
-
-var Casesorterct = null,
-  Casesorterresults = null,
-  Casesorteractual = 0,
-  Casesortertime = 0,
-  Casesortersec = 0,
-  CasesorterflagStopped = false,
-  Casesorterstate = 0,
-  Casesorterspeed = 0,
-  CasesorterspeedTemp = 0,
-  CasesorterflagPrint = 0,
-  CasesortersecStop = 0,
-  CasesorterONS = 0,
-  CasesortertimeStop = 30, //NOTE: Timestop
-  CasesorterWorktime = 3, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  CasesorterflagRunning = false,
-  CntInCasesorter = null,
-  CntOutCasesorter = null;
+    CntInCapper2 = 0,
+    CntRjCapper = 0,
+    Capperestado = 0;
+var casesorterct = null,
+    casesorterresults = null,
+    casesorteractual = 0,
+    casesortertime = 0,
+    casesortersec = 0,
+    casesorterflagStopped = false,
+    casesorterstate = 0,
+    casesorterspeed = 0,
+    casesorterspeedTemp = 0,
+    casesorterflagPrint = 0,
+    casesortersecStop = 0,
+    casesorterONS = false,
+    casesortertimeStop = 60, //NOTE: Timestop
+    casesorterWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    casesorterflagRunning = false;
 var CntInEOL1 = 0,
-  CntInEOL2 = 0,
-  CntInCasesorter = 0,
-  CntOutCasesorter = 0,
-  CntRjCasesorter = 0,
-  Casesorterestado = 0,
-  initialTimeCasesorter = Date.now(),
-  Casesortertime = 0,
-  CasesorterflagPrint = 0,
-  Casesortermaster;
-
+    CntInEOL2 = 0,
+    CntInCasesorter = 0,
+    CntOutCasesorter = 0,
+    CntRjCasesorter = 0,
+    Casesorterestado = 0;
 var initialTimeEOL = Date.now(),
-  EOLtime = 0,
-  EOLflagPrint = 0;
-
-
-
-
-var Casepackerct = null,
-  Casepackerresults = null,
-  Casepackeractual = 0,
-  Casepackertime = 0,
-  Casepackersec = 0,
-  CasepackerflagStopped = false,
-  Casepackerstate = 0,
-  Casepackerspeed = 0,
-  CasepackerspeedTemp = 0,
-  CasepackerflagPrint = 0,
-  CasepackersecStop = 0,
-  CasepackerONS = 0,
-  CasepackertimeStop = 30, //NOTE: Timestop
-  CasepackerWorktime = 3, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  CasepackerflagRunning = false,
-  CntInCasepacker = null,
-  CntOutCasepacker = null;
+    EOLtime = 0,
+    EOLflagPrint = 0;
+var casepackerct = null,
+    casepackerresults = null,
+    casepackeractual = 0,
+    casepackertime = 0,
+    casepackersec = 0,
+    casepackerflagStopped = false,
+    casepackerstate = 0,
+    casepackerspeed = 0,
+    casepackerspeedTemp = 0,
+    casepackerflagPrint = 0,
+    casepackersecStop = 0,
+    casepackerONS = false,
+    casepackertimeStop = 60, //NOTE: Timestop
+    casepackerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    casepackerflagRunning = false;
 var CntInCasepacker1 = 0,
-  CntInCasepacker2 = 0,
-  CntOutCasepacker = 0,
-  CntRjCasepacker = 0,
-  Casepackerestado = 0,
-  initialTimeCasepacker = Date.now(),
-  Casepackertime = 0,
-  CasepackerflagPrint = 0,
-  Casepackermaster;
-
-
-var Turnerct = null,
-  Turnerresults = null,
-  Turneractual = 0,
-  Turnertime = 0,
-  Turnersec = 0,
-  TurnerflagStopped = false,
-  Turnerstate = 0,
-  Turnerspeed = 0,
-  TurnerspeedTemp = 0,
-  TurnerflagPrint = 0,
-  TurnersecStop = 0,
-  TurnerONS = 0,
-  TurnertimeStop = 30, //NOTE: Timestop
-  TurnerWorktime = 3, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  TurnerflagRunning = false,
-  CntInTurner = null,
-  CntOutTurner = null;
+    CntInCasepacker2 = 0,
+    CntOutCasepacker = 0,
+    CntRjCasepacker = 0,
+    Casepackerestado = 0;
+var turnerct = null,
+    turnerresults = null,
+    CntInturner = null,
+    CntOutturner = null,
+    turneractual = 0,
+    turnertime = 0,
+    turnersec = 0,
+    turnerflagStopped = false,
+    turnerstate = 0,
+    turnerspeed = 0,
+    turnerspeedTemp = 0,
+    turnerflagPrint = 0,
+    turnersecStop = 0,
+    turnerONS = false,
+    turnertimeStop = 60, //NOTE: Timestop
+    turnerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    turnerflagRunning = false;
 var CntInTurner = 0,
-  CntOutTurner = 0,
-  Turnerestado = 0,
-  initialTimeTurner = Date.now(),
-  Turnertime = 0,
-  TurnerflagPrint = 0,
-  Turnermaster;
-
-var Fillerct = null,
-  Fillerresults = null,
-  Filleractual = 0,
-  Fillertime = 0,
-  Fillersec = 0,
-  FillerflagStopped = false,
-  Fillerstate = 0,
-  Fillerspeed = 0,
-  FillerspeedTemp = 0,
-  FillerflagPrint = 0,
-  FillersecStop = 0,
-  FillerONS = 0,
-  FillertimeStop = 50, //NOTE: Timestop
-  FillerWorktime = 60, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  FillerflagRunning = false,
-  CntInFiller = null,
-  CntOutFiller = null;
+    CntOutTurner = 0,
+    Turnerestado = 0;
+var fillerct = null,
+    fillerresults = null,
+    filleractual = 0,
+    fillertime = 0,
+    fillersec = 0,
+    fillerflagStopped = false,
+    fillerstate = 0,
+    fillerspeed = 0,
+    fillerspeedTemp = 0,
+    fillerflagPrint = 0,
+    fillersecStop = 0,
+    fillerONS = false,
+    fillertimeStop = 60, //NOTE: Timestop
+    fillerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    fillerflagRunning = false;
 var CntInFiller = 0,
-  CntOutFiller = 0,
-  CntRjFiller = 0,
-  Fillerestado = 0,
-  initialTimeFiller = Date.now(),
-  Fillertime = 0,
-  FillerflagPrint = 0,
-  Fillermaster;
-
-var Jarturnerct = null,
-  Jarturnerresults = null,
-  Jarturneractual = 0,
-  Jarturnertime = 0,
-  Jarturnersec = 0,
-  JarturnerflagStopped = false,
-  Jarturnerstate = 0,
-  Jarturnerspeed = 0,
-  JarturnerspeedTemp = 0,
-  JarturnerflagPrint = 0,
-  JarturnersecStop = 0,
-  JarturnerONS = 0,
-  JarturnertimeStop = 50, //NOTE: Timestop
-  JarturnerWorktime = 60, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  JarturnerflagRunning = false,
-  CntInJarturner = null,
-  CntOutJarturner = null;
+    CntOutFiller = 0,
+    CntRjFiller = 0,
+    Fillerestado = 0;
+var jarturnerct = null,
+    jarturnerresults = null,
+    jarturneractual = 0,
+    jarturnertime = 0,
+    jarturnersec = 0,
+    jarturnerflagStopped = false,
+    jarturnerstate = 0,
+    jarturnerspeed = 0,
+    jarturnerspeedTemp = 0,
+    jarturnerflagPrint = 0,
+    jarturnersecStop = 0,
+    jarturnerONS = false,
+    jarturnertimeStop = 60, //NOTE: Timestop
+    jarturnerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    jarturnerflagRunning = false;
 var CntInJarturner = 0,
-  CntOutJarturner = 0,
-  Jarturnerestado = 0,
-  initialTimeJarturner = Date.now(),
-  Jarturnertime = 0,
-  JarturnerflagPrint = 0,
-  Jarturnermaster;
-
-
-var Palletizerct = null,
-  Palletizerresults = null,
-  Palletizeractual = 0,
-  Palletizertime = 0,
-  Palletizersec = 0,
-  PalletizerflagStopped = false,
-  Palletizerstate = 0,
-  Palletizerspeed = 0,
-  PalletizerspeedTemp = 0,
-  PalletizerflagPrint = 0,
-  PalletizersecStop = 0,
-  PalletizerONS = 0,
-  PalletizertimeStop = 30, //NOTE: Timestop
-  PalletizerWorktime = 3, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  PalletizerflagRunning = false,
-  CntInPalletizer = null,
-  CntOutPalletizer = null;
+    CntOutJarturner = 0,
+    Jarturnerestado = 0;
+var palletizerct = null,
+    palletizerresults = null,
+    palletizeractual = 0,
+    palletizertime = 0,
+    palletizersec = 0,
+    palletizerflagStopped = false,
+    palletizerstate = 0,
+    palletizerspeed = 0,
+    palletizerspeedTemp = 0,
+    palletizerflagPrint = 0,
+    palletizersecStop = 0,
+    palletizerONS = false,
+    palletizertimeStop = 60, //NOTE: Timestop
+    palletizerWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    palletizerflagRunning = false;
 var CntInPalletizer = 0,
-  CntOutPalletizer = 0,
-  Palletizerestado = 0,
-  initialTimePalletizer = Date.now(),
-  Palletizertime = 0,
-  PalletizerflagPrint = 0,
-  Palletizermaster;
-
-var Sleeveapplicatorct = null,
-  Sleeveapplicatorresults = null,
-  Sleeveapplicatoractual = 0,
-  Sleeveapplicatortime = 0,
-  Sleeveapplicatorsec = 0,
-  SleeveapplicatorflagStopped = false,
-  Sleeveapplicatorstate = 0,
-  Sleeveapplicatorspeed = 0,
-  SleeveapplicatorspeedTemp = 0,
-  SleeveapplicatorflagPrint = 0,
-  SleeveapplicatorsecStop = 0,
-  SleeveapplicatorONS = 0,
-  SleeveapplicatortimeStop = 50, //NOTE: Timestop
-  SleeveapplicatorWorktime = 60, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  SleeveapplicatorflagRunning = false,
-  CntInSleeveapplicator = null,
-  CntOutSleeveapplicator = null;
-var CntInSleeveapplicator = 0,
-  CntOutSleeveapplicator = 0,
-  CntRjSleeveapplicator = 0,
-  Sleeveapplicatorestado = 0,
-  initialTimeSleeveapplicator = Date.now(),
-  Sleeveapplicatortime = 0,
-  SleeveapplicatorflagPrint = 0,
-  Sleeveapplicatormaster;
-
-var Spiralconveyorct = null,
-  Spiralconveyorresults = null,
-  Spiralconveyoractual = 0,
-  Spiralconveyortime = 0,
-  Spiralconveyorsec = 0,
-  SpiralconveyorflagStopped = false,
-  Spiralconveyorstate = 0,
-  Spiralconveyorspeed = 0,
-  SpiralconveyorspeedTemp = 0,
-  SpiralconveyorflagPrint = 0,
-  SpiralconveyorsecStop = 0,
-  SpiralconveyorONS = 0,
-  SpiralconveyortimeStop = 30, //NOTE: Timestop
-  SpiralconveyorWorktime = 3, //NOTE: 60 si la máquina trabaja continuamente, 3 sí tarda entre 40 y 60 segundos en "operar"
-  SpiralconveyorflagRunning = false,
-  CntInSpiralconveyor = null,
-  CntOutSpiralconveyor = null;
+    CntOutPalletizer = 0,
+    Palletizerestado = 0;
+var Sleeveapplicatorspeed = 0,
+    CntInSleeveapplicator = 0,
+    CntOutSleeveapplicator = 0,
+    CntRjSleeveapplicator = 0,
+    Sleeveapplicatorestado = 0,
+    initialTimeSleeveapplicator = Date.now(),
+    Sleeveapplicatortime = 0,
+    SleeveapplicatorflagPrint = 0,
+    Sleeveapplicatormaster;
+var spiralconveyorct = null,
+    spiralconveyorresults = null,
+    CntInspiralconveyor = null,
+    CntOutspiralconveyor = null,
+    spiralconveyoractual = 0,
+    spiralconveyortime = 0,
+    spiralconveyorsec = 0,
+    spiralconveyorflagStopped = false,
+    spiralconveyorstate = 0,
+    spiralconveyorspeed = 0,
+    spiralconveyorspeedTemp = 0,
+    spiralconveyorflagPrint = 0,
+    spiralconveyorsecStop = 0,
+    spiralconveyorONS = false,
+    spiralconveyortimeStop = 60, //NOTE: Timestop
+    spiralconveyorWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    spiralconveyorflagRunning = false;
 var CntInSpiralconveyor = 0,
-  CntOutSpiralconveyor = 0,
-  Spiralconveyorestado = 0,
-  initialTimeSpiralconveyor = Date.now(),
-  Spiralconveyortime = 0,
-  SpiralconveyorflagPrint = 0,
-  Spiralconveyormaster;
-var count = 10;
+    CntOutSpiralconveyor = 0,
+    Spiralconveyorestado = 0;
 start();
 
 function start() {
@@ -329,9 +243,6 @@ function start() {
 
 
 function connect() {
-
-  //  timer.setInterval(countDown, '', '1s');
-  console.log("Connecting");
   client.connect(endpointUrl, function(err) {
     if (err) {
 
@@ -348,7 +259,6 @@ function session() {
   client.createSession(function(err, session) {
     if (!err) {
       the_session = session;
-      console.log("sesion inciada");
 
       lectura();
     }
@@ -401,76 +311,67 @@ function lectura(cappermaster) {
     if (!err) {
       Capsorterestado = dataValue.value.value;
 
-
-
-      Capsorterct = CntOutCapsorter; // NOTE: igualar al contador de salida
-      if (CapsorterONS == 0 && Capsorterct) {
-        CapsorterspeedTemp = Capsorterct;
-        CapsorterONS = 1;
+        //------------------------------------------capsorter----------------------------------------------
+              capsorterct = CntOutCapsorter // NOTE: igualar al contador de salida
+              if (!capsorterONS && capsorterct) {
+                capsorterspeedTemp = capsorterct
+                capsortersec = Date.now()
+                capsorterONS = true
+                capsortertime = Date.now()
+              }
+              if(capsorterct > capsorteractual){
+                if(capsorterflagStopped){
+                  capsorterspeed = capsorterct - capsorterspeedTemp
+                  capsorterspeedTemp = capsorterct
+                  capsortersec = Date.now()
+                  capsortertime = Date.now()
+                }
+                capsortersecStop = 0
+                capsorterstate = 1
+                capsorterflagStopped = false
+                capsorterflagRunning = true
+              } else if( capsorterct == capsorteractual ){
+                if(capsortersecStop == 0){
+                  capsortertime = Date.now()
+                  capsortersecStop = Date.now()
+                }
+                if( ( Date.now() - ( capsortertimeStop * 1000 ) ) >= capsortersecStop ){
+                  capsorterspeed = 0
+                  capsorterstate = 2
+                  capsorterspeedTemp = capsorterct
+                  capsorterflagStopped = true
+                  capsorterflagRunning = false
+                  capsorterflagPrint = 1
+                }
+              }
+              capsorteractual = capsorterct
+              if(Date.now() - 60000 * capsorterWorktime >= capsortersec && capsortersecStop == 0){
+                if(capsorterflagRunning && capsorterct){
+                  capsorterflagPrint = 1
+                  capsortersecStop = 0
+                  capsorterspeed = capsorterct - capsorterspeedTemp
+                  capsorterspeedTemp = capsorterct
+                  capsortersec = Date.now()
+                }
+              }
+              capsorterresults = {
+                ST: Capsorterestado,
+                CPQO:  CntOutCapsorter,
+                SP: capsorterspeed
+              }
+              if (capsorterflagPrint == 1) {
+                for (var key in capsorterresults) {
+                  if( capsorterresults[key] != null && ! isNaN(capsorterresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_capsorter_l5.log', 'tt=' + capsortertime + ',var=' + key + ',val=' + capsorterresults[key] + '\n')
+                }
+                capsorterflagPrint = 0
+                capsortersecStop = 0
+                capsortertime = Date.now()
+              }
+        //------------------------------------------capsorter----------------------------------------------
       }
-      if (Capsorterct > Capsorteractual) {
-        if (CapsorterflagStopped) {
-          Capsorterspeed = Capsorterct - CapsorterspeedTemp;
-          CapsorterspeedTemp = Capsorterct;
-          Capsortersec = 0;
-        }
-        CapsortersecStop = 0;
-        Capsortersec++;
-        Capsortertime = Date.now();
-        Capsorterstate = 1;
-        CapsorterflagStopped = false;
-        CapsorterflagRunning = true;
-      } else if (Capsorterct == Capsorteractual) {
-        if (CapsortersecStop == 0) {
-          Capsortertime = Date.now();
-        }
-        CapsortersecStop++;
-        if (CapsortersecStop >= CapsortertimeStop) {
-          Capsorterspeed = 0;
-          Capsorterstate = 2;
-          CapsorterspeedTemp = Capsorterct;
-          CapsorterflagStopped = true;
-          CapsorterflagRunning = false;
-        }
-        if (CapsortersecStop % CapsortertimeStop * 3 == 0 || CapsortersecStop == CapsortertimeStop) {
-          CapsorterflagPrint = 1;
-
-          if (CapsortersecStop % CapsortertimeStop * 3 == 0) {
-            Capsortertime = Date.now();
-          }
-        }
-      }
-      Capsorteractual = Capsorterct;
-      if (Capsortersec == CapsorterWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Capsortersec = 0;
-        if (CapsorterflagRunning && Capsorterct) {
-          CapsorterflagPrint = 1;
-          CapsortersecStop = 0;
-          Capsorterspeed = Capsorterct - CapsorterspeedTemp;
-          CapsorterspeedTemp = Capsorterct;
-        }
-      }
-      Capsortermaster = {
-        "ST": Capsorterestado,
-        "CPQO": CntOutCapsorter,
-        "SP": Capsorterspeed
-
-      };
-
-
-      if (CapsorterflagPrint == 1) {
-        for (var key in Capsortermaster) {
-          if (Capsortermaster[key] != null && !isNaN(Capsortermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_capsorter_l5.log", 'tt=' + Capsortertime + ',var=' + key + ',val=' + Capsortermaster[key] + '\n');
-        }
-        CapsorterflagPrint = 0;
-      }
-
-
-    }
-  });
-
-
+    });
   //////////////////////////////////////////Capper/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + CapperCounter + "ProdInCount1", function(err, dataValue) {
     if (!err) {
@@ -503,74 +404,70 @@ function lectura(cappermaster) {
       Capperestado = dataValue.value.value;
 
 
-      Capperct = CntOutCapper; // NOTE: igualar al contador de salida
-      if (CapperONS == 0 && Capperct) {
-        CapperspeedTemp = Capperct;
-        CapperONS = 1;
-      }
-      if (Capperct > Capperactual) {
-        if (CapperflagStopped) {
-          Capperspeed = Capperct - CapperspeedTemp;
-          CapperspeedTemp = Capperct;
-          Cappersec = 0;
-        }
-        CappersecStop = 0;
-        Cappersec++;
-        Cappertime = Date.now();
-        Capperstate = 1;
-        CapperflagStopped = false;
-        CapperflagRunning = true;
-      } else if (Capperct == Capperactual) {
-        if (CappersecStop == 0) {
-          Cappertime = Date.now();
-        }
-        CappersecStop++;
-        if (CappersecStop >= CappertimeStop) {
-          Capperspeed = 0;
-          Capperstate = 2;
-          CapperspeedTemp = Capperct;
-          CapperflagStopped = true;
-          CapperflagRunning = false;
-        }
-        if (CappersecStop % CappertimeStop * 3 == 0 || CappersecStop == CappertimeStop) {
-          CapperflagPrint = 1;
-
-          if (CappersecStop % CappertimeStop * 3 == 0) {
-            Cappertime = Date.now();
-          }
-        }
-      }
-      Capperactual = Capperct;
-      if (Cappersec == CapperWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Cappersec = 0;
-        if (CapperflagRunning && Capperct) {
-          CapperflagPrint = 1;
-          CappersecStop = 0;
-          Capperspeed = Capperct - CapperspeedTemp;
-          CapperspeedTemp = Capperct;
-        }
-      }
-
-      cappermaster = {
-        "ST": Capperestado,
-        "CPQIB": CntInCapper1,
-        "CPQI": CntInCapper2,
-        "CPQO": CntOutCapper,
-        "CPQR": CntRjCapper,
-        "SP": Capperspeed
-      };
-
-      if (CapperflagPrint == 1) {
-        for (var key in cappermaster) {
-          if (cappermaster[key] != null && !isNaN(cappermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_capper_l5.log", 'tt=' + Cappertime + ',var=' + key + ',val=' + cappermaster[key] + '\n');
-        }
-        CapperflagPrint = 0;
-      }
+        //------------------------------------------capper----------------------------------------------
+              capperct = CntOutCapper // NOTE: igualar al contador de salida
+              if (!capperONS && capperct) {
+                capperspeedTemp = capperct
+                cappersec = Date.now()
+                capperONS = true
+                cappertime = Date.now()
+              }
+              if(capperct > capperactual){
+                if(capperflagStopped){
+                  capperspeed = capperct - capperspeedTemp
+                  capperspeedTemp = capperct
+                  cappersec = Date.now()
+                  cappertime = Date.now()
+                }
+                cappersecStop = 0
+                capperstate = 1
+                capperflagStopped = false
+                capperflagRunning = true
+              } else if( capperct == capperactual ){
+                if(cappersecStop == 0){
+                  cappertime = Date.now()
+                  cappersecStop = Date.now()
+                }
+                if( ( Date.now() - ( cappertimeStop * 1000 ) ) >= cappersecStop ){
+                  capperspeed = 0
+                  capperstate = 2
+                  capperspeedTemp = capperct
+                  capperflagStopped = true
+                  capperflagRunning = false
+                  capperflagPrint = 1
+                }
+              }
+              capperactual = capperct
+              if(Date.now() - 60000 * capperWorktime >= cappersec && cappersecStop == 0){
+                if(capperflagRunning && capperct){
+                  capperflagPrint = 1
+                  cappersecStop = 0
+                  capperspeed = capperct - capperspeedTemp
+                  capperspeedTemp = capperct
+                  cappersec = Date.now()
+                }
+              }
+              capperresults = {
+                ST: Capperestado,
+                CPQIB: CntInCapper1,
+                CPQI: CntInCapper2,
+                CPQO: CntOutCapper,
+                CPQR: CntRjCapper,
+                SP: capperspeed
+              }
+              if (capperflagPrint == 1) {
+                for (var key in capperresults) {
+                  if( capperresults[key] != null && ! isNaN(capperresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_capper_l5.log', 'tt=' + cappertime + ',var=' + key + ',val=' + capperresults[key] + '\n')
+                }
+                capperflagPrint = 0
+                cappersecStop = 0
+                cappertime = Date.now()
+              }
+        //------------------------------------------capper----------------------------------------------
     }
   });
-
-
   //////////////////////////////////////////Casesorter/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + CasesorterCounter + "Eol1Count", function(err, dataValue) {
     if (!err) {
@@ -601,74 +498,67 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + CasesorterStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
       Casesorterestado = dataValue.value.value;
-
-      Casesorterct = CntOutCasesorter; // NOTE: igualar al contador de salida
-      if (CasesorterONS == 0 && Casesorterct) {
-        CasesorterspeedTemp = Casesorterct;
-        CasesorterONS = 1;
-      }
-      if (Casesorterct > Casesorteractual) {
-        if (CasesorterflagStopped) {
-          Casesorterspeed = Casesorterct - CasesorterspeedTemp;
-          CasesorterspeedTemp = Casesorterct;
-          Casesortersec = 0;
-        }
-        CasesortersecStop = 0;
-        Casesortersec++;
-        Casesortertime = Date.now();
-        Casesorterstate = 1;
-        CasesorterflagStopped = false;
-        CasesorterflagRunning = true;
-      } else if (Casesorterct == Casesorteractual) {
-        if (CasesortersecStop == 0) {
-          Casesortertime = Date.now();
-        }
-        CasesortersecStop++;
-        if (CasesortersecStop >= CasesortertimeStop) {
-          Casesorterspeed = 0;
-          Casesorterstate = 2;
-          CasesorterspeedTemp = Casesorterct;
-          CasesorterflagStopped = true;
-          CasesorterflagRunning = false;
-        }
-        if (CasesortersecStop % CasesortertimeStop * 3 == 0 || CasesortersecStop == CasesortertimeStop) {
-          CasesorterflagPrint = 1;
-
-          if (CasesortersecStop % CasesortertimeStop * 3 == 0) {
-            Casesortertime = Date.now();
-          }
-        }
-      }
-      Casesorteractual = Casesorterct;
-      if (Casesortersec == CasesorterWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Casesortersec = 0;
-        if (CasesorterflagRunning && Casesorterct) {
-          CasesorterflagPrint = 1;
-          CasesortersecStop = 0;
-          Casesorterspeed = Casesorterct - CasesorterspeedTemp;
-          CasesorterspeedTemp = Casesorterct;
-        }
-      }
-
-
-
-      Casesortermaster = {
-        "ST": Casesorterestado,
-        "CPQI": CntInCasesorter,
-        "CPQO": CntOutCasesorter,
-        "CPQR": CntRjCasesorter,
-        "SP": Casesorterspeed
-      };
-
-      if (CasesorterflagPrint == 1) {
-        for (var key in Casesortermaster) {
-          if (Casesortermaster[key] != null && !isNaN(Casesortermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_casesorter_l5.log", 'tt=' + Casesortertime + ',var=' + key + ',val=' + Casesortermaster[key] + '\n');
-        }
-        CasesorterflagPrint = 0;
-      }
-
-
+        //------------------------------------------casesorter----------------------------------------------
+              casesorterct = CntOutCasesorter // NOTE: igualar al contador de salida
+              if (!casesorterONS && casesorterct) {
+                casesorterspeedTemp = casesorterct
+                casesortersec = Date.now()
+                casesorterONS = true
+                casesortertime = Date.now()
+              }
+              if(casesorterct > casesorteractual){
+                if(casesorterflagStopped){
+                  casesorterspeed = casesorterct - casesorterspeedTemp
+                  casesorterspeedTemp = casesorterct
+                  casesortersec = Date.now()
+                  casesortertime = Date.now()
+                }
+                casesortersecStop = 0
+                casesorterstate = 1
+                casesorterflagStopped = false
+                casesorterflagRunning = true
+              } else if( casesorterct == casesorteractual ){
+                if(casesortersecStop == 0){
+                  casesortertime = Date.now()
+                  casesortersecStop = Date.now()
+                }
+                if( ( Date.now() - ( casesortertimeStop * 1000 ) ) >= casesortersecStop ){
+                  casesorterspeed = 0
+                  casesorterstate = 2
+                  casesorterspeedTemp = casesorterct
+                  casesorterflagStopped = true
+                  casesorterflagRunning = false
+                  casesorterflagPrint = 1
+                }
+              }
+              casesorteractual = casesorterct
+              if(Date.now() - 60000 * casesorterWorktime >= casesortersec && casesortersecStop == 0){
+                if(casesorterflagRunning && casesorterct){
+                  casesorterflagPrint = 1
+                  casesortersecStop = 0
+                  casesorterspeed = casesorterct - casesorterspeedTemp
+                  casesorterspeedTemp = casesorterct
+                  casesortersec = Date.now()
+                }
+              }
+              casesorterresults = {
+                ST: Casesorterestado,
+                CPQI: CntInCasesorter,
+                CPQO: CntOutCasesorter,
+                CPQR: CntRjCasesorter,
+                SP: casesorterspeed
+              }
+              if (casesorterflagPrint == 1) {
+                for (var key in casesorterresults) {
+                  if( casesorterresults[key] != null && ! isNaN(casesorterresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casesorter_l5.log', 'tt=' + casesortertime + ',var=' + key + ',val=' + casesorterresults[key] + '\n')
+                }
+                casesorterflagPrint = 0
+                casesortersecStop = 0
+                casesortertime = Date.now()
+              }
+        //------------------------------------------casesorter----------------------------------------------
     }
   });
 
@@ -705,70 +595,68 @@ function lectura(cappermaster) {
       Casepackerestado = dataValue.value.value;
 
 
-      Casepackerct = CntOutCasepacker; // NOTE: igualar al contador de salida
-      if (CasepackerONS == 0 && Casepackerct) {
-        CasepackerspeedTemp = Casepackerct;
-        CasepackerONS = 1;
-      }
-      if (Casepackerct > Casepackeractual) {
-        if (CasepackerflagStopped) {
-          Casepackerspeed = Casepackerct - CasepackerspeedTemp;
-          CasepackerspeedTemp = Casepackerct;
-          Casepackersec = 0;
-        }
-        CasepackersecStop = 0;
-        Casepackersec++;
-        Casepackertime = Date.now();
-        Casepackerstate = 1;
-        CasepackerflagStopped = false;
-        CasepackerflagRunning = true;
-      } else if (Casepackerct == Casepackeractual) {
-        if (CasepackersecStop == 0) {
-          Casepackertime = Date.now();
-        }
-        CasepackersecStop++;
-        if (CasepackersecStop >= CasepackertimeStop) {
-          Casepackerspeed = 0;
-          Casepackerstate = 2;
-          CasepackerspeedTemp = Casepackerct;
-          CasepackerflagStopped = true;
-          CasepackerflagRunning = false;
-        }
-        if (CasepackersecStop % CasepackertimeStop * 3 == 0 || CasepackersecStop == CasepackertimeStop) {
-          CasepackerflagPrint = 1;
-
-          if (CasepackersecStop % CasepackertimeStop * 3 == 0) {
-            Casepackertime = Date.now();
-          }
-        }
-      }
-      Casepackeractual = Casepackerct;
-      if (Casepackersec == CasepackerWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Casepackersec = 0;
-        if (CasepackerflagRunning && Casepackerct) {
-          CasepackerflagPrint = 1;
-          CasepackersecStop = 0;
-          Casepackerspeed = Casepackerct - CasepackerspeedTemp;
-          CasepackerspeedTemp = Casepackerct;
-        }
-      }
-
-      Casepackermaster = {
-        "ST": Casepackerestado,
-        "CPQIB": CntInCasepacker1,
-        "CPQI": CntInCasepacker2,
-        "CPQO": CntOutCasepacker,
-        "CPQR": CntRjCasepacker,
-        "SP": Casepackerspeed
-      };
-
-      if (CasepackerflagPrint == 1) {
-        for (var key in Casepackermaster) {
-          if (Casepackermaster[key] != null && !isNaN(Casepackermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log", 'tt=' + Casepackertime + ',var=' + key + ',val=' + Casepackermaster[key] + '\n');
-        }
-        CasepackerflagPrint = 0;
-      }
+        //------------------------------------------casepacker----------------------------------------------
+              casepackerct = CntOutCasepacker // NOTE: igualar al contador de salida
+              if (!casepackerONS && casepackerct) {
+                casepackerspeedTemp = casepackerct
+                casepackersec = Date.now()
+                casepackerONS = true
+                casepackertime = Date.now()
+              }
+              if(casepackerct > casepackeractual){
+                if(casepackerflagStopped){
+                  casepackerspeed = casepackerct - casepackerspeedTemp
+                  casepackerspeedTemp = casepackerct
+                  casepackersec = Date.now()
+                  casepackertime = Date.now()
+                }
+                casepackersecStop = 0
+                casepackerstate = 1
+                casepackerflagStopped = false
+                casepackerflagRunning = true
+              } else if( casepackerct == casepackeractual ){
+                if(casepackersecStop == 0){
+                  casepackertime = Date.now()
+                  casepackersecStop = Date.now()
+                }
+                if( ( Date.now() - ( casepackertimeStop * 1000 ) ) >= casepackersecStop ){
+                  casepackerspeed = 0
+                  casepackerstate = 2
+                  casepackerspeedTemp = casepackerct
+                  casepackerflagStopped = true
+                  casepackerflagRunning = false
+                  casepackerflagPrint = 1
+                }
+              }
+              casepackeractual = casepackerct
+              if(Date.now() - 60000 * casepackerWorktime >= casepackersec && casepackersecStop == 0){
+                if(casepackerflagRunning && casepackerct){
+                  casepackerflagPrint = 1
+                  casepackersecStop = 0
+                  casepackerspeed = casepackerct - casepackerspeedTemp
+                  casepackerspeedTemp = casepackerct
+                  casepackersec = Date.now()
+                }
+              }
+              casepackerresults = {
+                ST: Casepackerestado,
+                CPQIB: CntInCasepacker1,
+                CPQI: CntInCasepacker2,
+                CPQO: CntOutCasepacker,
+                CPQR: CntRjCasepacker,
+                SP: casepackerspeed
+              }
+              if (casepackerflagPrint == 1) {
+                for (var key in casepackerresults) {
+                  if( casepackerresults[key] != null && ! isNaN(casepackerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n')
+                }
+                casepackerflagPrint = 0
+                casepackersecStop = 0
+                casepackertime = Date.now()
+              }
+        //------------------------------------------casepacker----------------------------------------------
     }
   });
 
@@ -790,69 +678,66 @@ function lectura(cappermaster) {
     if (!err) {
       Turnerestado = dataValue.value.value;
 
-
-      Turnerct = CntOutTurner; // NOTE: igualar al contador de salida
-      if (TurnerONS == 0 && Turnerct) {
-        TurnerspeedTemp = Turnerct;
-        TurnerONS = 1;
-      }
-      if (Turnerct > Turneractual) {
-        if (TurnerflagStopped) {
-          Turnerspeed = Turnerct - TurnerspeedTemp;
-          TurnerspeedTemp = Turnerct;
-          Turnersec = 0;
-        }
-        TurnersecStop = 0;
-        Turnersec++;
-        Turnertime = Date.now();
-        Turnerstate = 1;
-        TurnerflagStopped = false;
-        TurnerflagRunning = true;
-      } else if (Turnerct == Turneractual) {
-        if (TurnersecStop == 0) {
-          Turnertime = Date.now();
-        }
-        TurnersecStop++;
-        if (TurnersecStop >= TurnertimeStop) {
-          Turnerspeed = 0;
-          Turnerstate = 2;
-          TurnerspeedTemp = Turnerct;
-          TurnerflagStopped = true;
-          TurnerflagRunning = false;
-        }
-        if (TurnersecStop % TurnertimeStop * 3 == 0 || TurnersecStop == TurnertimeStop) {
-          TurnerflagPrint = 1;
-
-          if (TurnersecStop % TurnertimeStop * 3 == 0) {
-            Turnertime = Date.now();
-          }
-        }
-      }
-      Turneractual = Turnerct;
-      if (Turnersec == TurnerWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Turnersec = 0;
-        if (TurnerflagRunning && Turnerct) {
-          TurnerflagPrint = 1;
-          TurnersecStop = 0;
-          Turnerspeed = Turnerct - TurnerspeedTemp;
-          TurnerspeedTemp = Turnerct;
-        }
-      }
-
-      Turnermaster = {
-        "ST": Turnerestado,
-        "CPQI": CntInTurner,
-        "CPQO": CntOutTurner,
-        "SP": Turnerspeed
-      };
-
-      if (TurnerflagPrint == 1) {
-        for (var key in Turnermaster) {
-          if (Turnermaster[key] != null && !isNaN(Turnermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log", 'tt=' + Turnertime + ',var=' + key + ',val=' + Turnermaster[key] + '\n');
-        }
-        TurnerflagPrint = 0;
-      }
+        //------------------------------------------turner----------------------------------------------
+              turnerct = CntOutTurner // NOTE: igualar al contador de salida
+              if (!turnerONS && turnerct) {
+                turnerspeedTemp = turnerct
+                turnersec = Date.now()
+                turnerONS = true
+                turnertime = Date.now()
+              }
+              if(turnerct > turneractual){
+                if(turnerflagStopped){
+                  turnerspeed = turnerct - turnerspeedTemp
+                  turnerspeedTemp = turnerct
+                  turnersec = Date.now()
+                  turnertime = Date.now()
+                }
+                turnersecStop = 0
+                turnerstate = 1
+                turnerflagStopped = false
+                turnerflagRunning = true
+              } else if( turnerct == turneractual ){
+                if(turnersecStop == 0){
+                  turnertime = Date.now()
+                  turnersecStop = Date.now()
+                }
+                if( ( Date.now() - ( turnertimeStop * 1000 ) ) >= turnersecStop ){
+                  turnerspeed = 0
+                  turnerstate = 2
+                  turnerspeedTemp = turnerct
+                  turnerflagStopped = true
+                  turnerflagRunning = false
+                  turnerflagPrint = 1
+                }
+              }
+              turneractual = turnerct
+              if(Date.now() - 60000 * turnerWorktime >= turnersec && turnersecStop == 0){
+                if(turnerflagRunning && turnerct){
+                  turnerflagPrint = 1
+                  turnersecStop = 0
+                  turnerspeed = turnerct - turnerspeedTemp
+                  turnerspeedTemp = turnerct
+                  turnersec = Date.now()
+                }
+              }
+              turnerresults = {
+                ST: Turnerestado,
+                CPQI: CntInTurner,
+                CPQO: CntOutTurner,
+                SP: turnerspeed
+              }
+              if (turnerflagPrint == 1) {
+                for (var key in turnerresults) {
+                  if( turnerresults[key] != null && ! isNaN(turnerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
+                }
+                turnerflagPrint = 0
+                turnersecStop = 0
+                turnertime = Date.now()
+              }
+        //------------------------------------------turner----------------------------------------------
     }
   });
 
@@ -883,70 +768,67 @@ function lectura(cappermaster) {
     if (!err) {
       Fillerestado = dataValue.value.value;
 
-
-      Fillerct = CntOutFiller; // NOTE: igualar al contador de salida
-      if (FillerONS == 0 && Fillerct) {
-        FillerspeedTemp = Fillerct;
-        FillerONS = 1;
-      }
-      if (Fillerct > Filleractual) {
-        if (FillerflagStopped) {
-          Fillerspeed = Fillerct - FillerspeedTemp;
-          FillerspeedTemp = Fillerct;
-          Fillersec = 0;
-        }
-        FillersecStop = 0;
-        Fillersec++;
-        Fillertime = Date.now();
-        Fillerstate = 1;
-        FillerflagStopped = false;
-        FillerflagRunning = true;
-      } else if (Fillerct == Filleractual) {
-        if (FillersecStop == 0) {
-          Fillertime = Date.now();
-        }
-        FillersecStop++;
-        if (FillersecStop >= FillertimeStop) {
-          Fillerspeed = 0;
-          Fillerstate = 2;
-          FillerspeedTemp = Fillerct;
-          FillerflagStopped = true;
-          FillerflagRunning = false;
-        }
-        if (FillersecStop % FillertimeStop * 3 == 0 || FillersecStop == FillertimeStop) {
-          FillerflagPrint = 1;
-
-          if (FillersecStop % FillertimeStop * 3 == 0) {
-            Fillertime = Date.now();
-          }
-        }
-      }
-      Filleractual = Fillerct;
-      if (Fillersec == FillerWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Fillersec = 0;
-        if (FillerflagRunning && Fillerct) {
-          FillerflagPrint = 1;
-          FillersecStop = 0;
-          Fillerspeed = Fillerct - FillerspeedTemp;
-          FillerspeedTemp = Fillerct;
-        }
-      }
-
-      Fillermaster = {
-        "ST": Fillerestado,
-        "CPQI": CntInFiller,
-        "CPQO": CntOutFiller,
-        "CPQR": CntRjFiller,
-        "SP": Fillerspeed
-      };
-
-      if (FillerflagPrint == 1) {
-        for (var key in Fillermaster) {
-          if (Fillermaster[key] != null && !isNaN(Fillermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_filler_l5.log", 'tt=' + Fillertime + ',var=' + key + ',val=' + Fillermaster[key] + '\n');
-        }
-        FillerflagPrint = 0;
-      }
+        //------------------------------------------filler----------------------------------------------
+              fillerct = CntOutFiller // NOTE: igualar al contador de salida
+              if (!fillerONS && fillerct) {
+                fillerspeedTemp = fillerct
+                fillersec = Date.now()
+                fillerONS = true
+                fillertime = Date.now()
+              }
+              if(fillerct > filleractual){
+                if(fillerflagStopped){
+                  fillerspeed = fillerct - fillerspeedTemp
+                  fillerspeedTemp = fillerct
+                  fillersec = Date.now()
+                  fillertime = Date.now()
+                }
+                fillersecStop = 0
+                fillerstate = 1
+                fillerflagStopped = false
+                fillerflagRunning = true
+              } else if( fillerct == filleractual ){
+                if(fillersecStop == 0){
+                  fillertime = Date.now()
+                  fillersecStop = Date.now()
+                }
+                if( ( Date.now() - ( fillertimeStop * 1000 ) ) >= fillersecStop ){
+                  fillerspeed = 0
+                  fillerstate = 2
+                  fillerspeedTemp = fillerct
+                  fillerflagStopped = true
+                  fillerflagRunning = false
+                  fillerflagPrint = 1
+                }
+              }
+              filleractual = fillerct
+              if(Date.now() - 60000 * fillerWorktime >= fillersec && fillersecStop == 0){
+                if(fillerflagRunning && fillerct){
+                  fillerflagPrint = 1
+                  fillersecStop = 0
+                  fillerspeed = fillerct - fillerspeedTemp
+                  fillerspeedTemp = fillerct
+                  fillersec = Date.now()
+                }
+              }
+              fillerresults = {
+                ST: Fillerestado,
+                CPQI: CntInFiller,
+                CPQO: CntOutFiller,
+                CPQR: CntRjFiller,
+                SP: fillerspeed
+              }
+              if (fillerflagPrint == 1) {
+                for (var key in fillerresults) {
+                  if( fillerresults[key] != null && ! isNaN(fillerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_filler_l5.log', 'tt=' + fillertime + ',var=' + key + ',val=' + fillerresults[key] + '\n')
+                }
+                fillerflagPrint = 0
+                fillersecStop = 0
+                fillertime = Date.now()
+              }
+        //------------------------------------------filler----------------------------------------------
     }
   });
 
@@ -971,69 +853,66 @@ function lectura(cappermaster) {
     if (!err) {
       Jarturnerestado = dataValue.value.value;
 
-
-      Jarturnerct = CntOutJarturner; // NOTE: igualar al contador de salida
-      if (JarturnerONS == 0 && Jarturnerct) {
-        JarturnerspeedTemp = Jarturnerct;
-        JarturnerONS = 1;
-      }
-      if (Jarturnerct > Jarturneractual) {
-        if (JarturnerflagStopped) {
-          Jarturnerspeed = Jarturnerct - JarturnerspeedTemp;
-          JarturnerspeedTemp = Jarturnerct;
-          Jarturnersec = 0;
-        }
-        JarturnersecStop = 0;
-        Jarturnersec++;
-        Jarturnertime = Date.now();
-        Jarturnerstate = 1;
-        JarturnerflagStopped = false;
-        JarturnerflagRunning = true;
-      } else if (Jarturnerct == Jarturneractual) {
-        if (JarturnersecStop == 0) {
-          Jarturnertime = Date.now();
-        }
-        JarturnersecStop++;
-        if (JarturnersecStop >= JarturnertimeStop) {
-          Jarturnerspeed = 0;
-          Jarturnerstate = 2;
-          JarturnerspeedTemp = Jarturnerct;
-          JarturnerflagStopped = true;
-          JarturnerflagRunning = false;
-        }
-        if (JarturnersecStop % JarturnertimeStop * 3 == 0 || JarturnersecStop == JarturnertimeStop) {
-          JarturnerflagPrint = 1;
-
-          if (JarturnersecStop % JarturnertimeStop * 3 == 0) {
-            Jarturnertime = Date.now();
-          }
-        }
-      }
-      Jarturneractual = Jarturnerct;
-      if (Jarturnersec == JarturnerWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Jarturnersec = 0;
-        if (JarturnerflagRunning && Jarturnerct) {
-          JarturnerflagPrint = 1;
-          JarturnersecStop = 0;
-          Jarturnerspeed = Jarturnerct - JarturnerspeedTemp;
-          JarturnerspeedTemp = Jarturnerct;
-        }
-      }
-
-      Jarturnermaster = {
-        "ST": Jarturnerestado,
-        "CPQI": CntInJarturner,
-        "CPQO": CntOutJarturner,
-        "SP": Jarturnerspeed
-      };
-
-      if (JarturnerflagPrint == 1) {
-        for (var key in Jarturnermaster) {
-          if (Jarturnermaster[key] != null && !isNaN(Jarturnermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_jar_turner_l5.log", 'tt=' + Jarturnertime + ',var=' + key + ',val=' + Jarturnermaster[key] + '\n');
-        }
-        JarturnerflagPrint = 0;
-      }
+        //------------------------------------------jarturner----------------------------------------------
+              jarturnerct = CntOutJarturner // NOTE: igualar al contador de salida
+              if (!jarturnerONS && jarturnerct) {
+                jarturnerspeedTemp = jarturnerct
+                jarturnersec = Date.now()
+                jarturnerONS = true
+                jarturnertime = Date.now()
+              }
+              if(jarturnerct > jarturneractual){
+                if(jarturnerflagStopped){
+                  jarturnerspeed = jarturnerct - jarturnerspeedTemp
+                  jarturnerspeedTemp = jarturnerct
+                  jarturnersec = Date.now()
+                  jarturnertime = Date.now()
+                }
+                jarturnersecStop = 0
+                jarturnerstate = 1
+                jarturnerflagStopped = false
+                jarturnerflagRunning = true
+              } else if( jarturnerct == jarturneractual ){
+                if(jarturnersecStop == 0){
+                  jarturnertime = Date.now()
+                  jarturnersecStop = Date.now()
+                }
+                if( ( Date.now() - ( jarturnertimeStop * 1000 ) ) >= jarturnersecStop ){
+                  jarturnerspeed = 0
+                  jarturnerstate = 2
+                  jarturnerspeedTemp = jarturnerct
+                  jarturnerflagStopped = true
+                  jarturnerflagRunning = false
+                  jarturnerflagPrint = 1
+                }
+              }
+              jarturneractual = jarturnerct
+              if(Date.now() - 60000 * jarturnerWorktime >= jarturnersec && jarturnersecStop == 0){
+                if(jarturnerflagRunning && jarturnerct){
+                  jarturnerflagPrint = 1
+                  jarturnersecStop = 0
+                  jarturnerspeed = jarturnerct - jarturnerspeedTemp
+                  jarturnerspeedTemp = jarturnerct
+                  jarturnersec = Date.now()
+                }
+              }
+              jarturnerresults = {
+                ST: Jarturnerestado,
+                CPQI: CntInJarturner,
+                CPQO: CntOutJarturner,
+                SP: jarturnerspeed
+              }
+              if (jarturnerflagPrint == 1) {
+                for (var key in jarturnerresults) {
+                  if( jarturnerresults[key] != null && ! isNaN(jarturnerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_jarturner_l5.log', 'tt=' + jarturnertime + ',var=' + key + ',val=' + jarturnerresults[key] + '\n')
+                }
+                jarturnerflagPrint = 0
+                jarturnersecStop = 0
+                jarturnertime = Date.now()
+              }
+        //------------------------------------------jarturner----------------------------------------------
     }
   });
 
@@ -1057,69 +936,66 @@ function lectura(cappermaster) {
     if (!err) {
       Palletizerestado = dataValue.value.value;
 
-
-      Palletizerct = CntOutPalletizer; // NOTE: igualar al contador de salida
-      if (PalletizerONS == 0 && Palletizerct) {
-        PalletizerspeedTemp = Palletizerct;
-        PalletizerONS = 1;
-      }
-      if (Palletizerct > Palletizeractual) {
-        if (PalletizerflagStopped) {
-          Palletizerspeed = Palletizerct - PalletizerspeedTemp;
-          PalletizerspeedTemp = Palletizerct;
-          Palletizersec = 0;
-        }
-        PalletizersecStop = 0;
-        Palletizersec++;
-        Palletizertime = Date.now();
-        Palletizerstate = 1;
-        PalletizerflagStopped = false;
-        PalletizerflagRunning = true;
-      } else if (Palletizerct == Palletizeractual) {
-        if (PalletizersecStop == 0) {
-          Palletizertime = Date.now();
-        }
-        PalletizersecStop++;
-        if (PalletizersecStop >= PalletizertimeStop) {
-          Palletizerspeed = 0;
-          Palletizerstate = 2;
-          PalletizerspeedTemp = Palletizerct;
-          PalletizerflagStopped = true;
-          PalletizerflagRunning = false;
-        }
-        if (PalletizersecStop % PalletizertimeStop * 3 == 0 || PalletizersecStop == PalletizertimeStop) {
-          PalletizerflagPrint = 1;
-
-          if (PalletizersecStop % PalletizertimeStop * 3 == 0) {
-            Palletizertime = Date.now();
-          }
-        }
-      }
-      Palletizeractual = Palletizerct;
-      if (Palletizersec == PalletizerWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Palletizersec = 0;
-        if (PalletizerflagRunning && Palletizerct) {
-          PalletizerflagPrint = 1;
-          PalletizersecStop = 0;
-          Palletizerspeed = Palletizerct - PalletizerspeedTemp;
-          PalletizerspeedTemp = Palletizerct;
-        }
-      }
-
-      Palletizermaster = {
-        "ST": Palletizerestado,
-        "CPQI": CntInPalletizer,
-        "CPQO": CntOutPalletizer,
-        "SP": Palletizerspeed
-      };
-
-      if (PalletizerflagPrint == 1) {
-        for (var key in Palletizermaster) {
-          if (Palletizermaster[key] != null && !isNaN(Palletizermaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_palletizer_l5.log", 'tt=' + Palletizertime + ',var=' + key + ',val=' + Palletizermaster[key] + '\n');
-        }
-        PalletizerflagPrint = 0;
-      }
+        //------------------------------------------palletizer----------------------------------------------
+              palletizerct = CntOutPalletizer // NOTE: igualar al contador de salida
+              if (!palletizerONS && palletizerct) {
+                palletizerspeedTemp = palletizerct
+                palletizersec = Date.now()
+                palletizerONS = true
+                palletizertime = Date.now()
+              }
+              if(palletizerct > palletizeractual){
+                if(palletizerflagStopped){
+                  palletizerspeed = palletizerct - palletizerspeedTemp
+                  palletizerspeedTemp = palletizerct
+                  palletizersec = Date.now()
+                  palletizertime = Date.now()
+                }
+                palletizersecStop = 0
+                palletizerstate = 1
+                palletizerflagStopped = false
+                palletizerflagRunning = true
+              } else if( palletizerct == palletizeractual ){
+                if(palletizersecStop == 0){
+                  palletizertime = Date.now()
+                  palletizersecStop = Date.now()
+                }
+                if( ( Date.now() - ( palletizertimeStop * 1000 ) ) >= palletizersecStop ){
+                  palletizerspeed = 0
+                  palletizerstate = 2
+                  palletizerspeedTemp = palletizerct
+                  palletizerflagStopped = true
+                  palletizerflagRunning = false
+                  palletizerflagPrint = 1
+                }
+              }
+              palletizeractual = palletizerct
+              if(Date.now() - 60000 * palletizerWorktime >= palletizersec && palletizersecStop == 0){
+                if(palletizerflagRunning && palletizerct){
+                  palletizerflagPrint = 1
+                  palletizersecStop = 0
+                  palletizerspeed = palletizerct - palletizerspeedTemp
+                  palletizerspeedTemp = palletizerct
+                  palletizersec = Date.now()
+                }
+              }
+              palletizerresults = {
+                ST: Palletizerestado,
+                CPQI: CntInPalletizer,
+                CPQO: CntOutPalletizer,
+                SP: palletizerspeed
+              }
+              if (palletizerflagPrint == 1) {
+                for (var key in palletizerresults) {
+                  if( palletizerresults[key] != null && ! isNaN(palletizerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_palletizer_l5.log', 'tt=' + palletizertime + ',var=' + key + ',val=' + palletizerresults[key] + '\n')
+                }
+                palletizerflagPrint = 0
+                palletizersecStop = 0
+                palletizertime = Date.now()
+              }
+        //------------------------------------------palletizer----------------------------------------------
     }
   });
 
@@ -1209,69 +1085,66 @@ function lectura(cappermaster) {
     if (!err) {
       Spiralconveyorestado = dataValue.value.value;
 
-
-      Spiralconveyorct = CntOutSpiralconveyor; // NOTE: igualar al contador de salida
-      if (SpiralconveyorONS == 0 && Spiralconveyorct) {
-        SpiralconveyorspeedTemp = Spiralconveyorct;
-        SpiralconveyorONS = 1;
-      }
-      if (Spiralconveyorct > Spiralconveyoractual) {
-        if (SpiralconveyorflagStopped) {
-          Spiralconveyorspeed = Spiralconveyorct - SpiralconveyorspeedTemp;
-          SpiralconveyorspeedTemp = Spiralconveyorct;
-          Spiralconveyorsec = 0;
-        }
-        SpiralconveyorsecStop = 0;
-        Spiralconveyorsec++;
-        Spiralconveyortime = Date.now();
-        Spiralconveyorstate = 1;
-        SpiralconveyorflagStopped = false;
-        SpiralconveyorflagRunning = true;
-      } else if (Spiralconveyorct == Spiralconveyoractual) {
-        if (SpiralconveyorsecStop == 0) {
-          Spiralconveyortime = Date.now();
-        }
-        SpiralconveyorsecStop++;
-        if (SpiralconveyorsecStop >= SpiralconveyortimeStop) {
-          Spiralconveyorspeed = 0;
-          Spiralconveyorstate = 2;
-          SpiralconveyorspeedTemp = Spiralconveyorct;
-          SpiralconveyorflagStopped = true;
-          SpiralconveyorflagRunning = false;
-        }
-        if (SpiralconveyorsecStop % SpiralconveyortimeStop * 3 == 0 || SpiralconveyorsecStop == SpiralconveyortimeStop) {
-          SpiralconveyorflagPrint = 1;
-
-          if (SpiralconveyorsecStop % SpiralconveyortimeStop * 3 == 0) {
-            Spiralconveyortime = Date.now();
-          }
-        }
-      }
-      Spiralconveyoractual = Spiralconveyorct;
-      if (Spiralconveyorsec == SpiralconveyorWorktime) { //NOTE: Modificar el 60 dependiendo del tiempo de trabajo de la máquina. (Cerca de 40 segundos igualar a 3)
-        Spiralconveyorsec = 0;
-        if (SpiralconveyorflagRunning && Spiralconveyorct) {
-          SpiralconveyorflagPrint = 1;
-          SpiralconveyorsecStop = 0;
-          Spiralconveyorspeed = Spiralconveyorct - SpiralconveyorspeedTemp;
-          SpiralconveyorspeedTemp = Spiralconveyorct;
-        }
-      }
-
-      Spiralconveyormaster = {
-        "ST": Spiralconveyorestado,
-        "CPQI": CntInSpiralconveyor,
-        "CPQO": CntOutSpiralconveyor,
-        "SP": Spiralconveyorspeed
-      };
-
-      if (SpiralconveyorflagPrint == 1) {
-        for (var key in Spiralconveyormaster) {
-          if (Spiralconveyormaster[key] != null && !isNaN(Spiralconveyormaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_Spiralconveyor_l5.log", 'tt=' + Spiralconveyortime + ',var=' + key + ',val=' + Spiralconveyormaster[key] + '\n');
-        }
-        SpiralconveyorflagPrint = 0;
-      }
+        //------------------------------------------spiralconveyor----------------------------------------------
+              spiralconveyorct = CntOutSpiralconveyor // NOTE: igualar al contador de salida
+              if (!spiralconveyorONS && spiralconveyorct) {
+                spiralconveyorspeedTemp = spiralconveyorct
+                spiralconveyorsec = Date.now()
+                spiralconveyorONS = true
+                spiralconveyortime = Date.now()
+              }
+              if(spiralconveyorct > spiralconveyoractual){
+                if(spiralconveyorflagStopped){
+                  spiralconveyorspeed = spiralconveyorct - spiralconveyorspeedTemp
+                  spiralconveyorspeedTemp = spiralconveyorct
+                  spiralconveyorsec = Date.now()
+                  spiralconveyortime = Date.now()
+                }
+                spiralconveyorsecStop = 0
+                spiralconveyorstate = 1
+                spiralconveyorflagStopped = false
+                spiralconveyorflagRunning = true
+              } else if( spiralconveyorct == spiralconveyoractual ){
+                if(spiralconveyorsecStop == 0){
+                  spiralconveyortime = Date.now()
+                  spiralconveyorsecStop = Date.now()
+                }
+                if( ( Date.now() - ( spiralconveyortimeStop * 1000 ) ) >= spiralconveyorsecStop ){
+                  spiralconveyorspeed = 0
+                  spiralconveyorstate = 2
+                  spiralconveyorspeedTemp = spiralconveyorct
+                  spiralconveyorflagStopped = true
+                  spiralconveyorflagRunning = false
+                  spiralconveyorflagPrint = 1
+                }
+              }
+              spiralconveyoractual = spiralconveyorct
+              if(Date.now() - 60000 * spiralconveyorWorktime >= spiralconveyorsec && spiralconveyorsecStop == 0){
+                if(spiralconveyorflagRunning && spiralconveyorct){
+                  spiralconveyorflagPrint = 1
+                  spiralconveyorsecStop = 0
+                  spiralconveyorspeed = spiralconveyorct - spiralconveyorspeedTemp
+                  spiralconveyorspeedTemp = spiralconveyorct
+                  spiralconveyorsec = Date.now()
+                }
+              }
+              spiralconveyorresults = {
+                ST: Spiralconveyorestado,
+                CPQI: CntInSpiralconveyor,
+                CPQO: CntOutSpiralconveyor,
+                SP: spiralconveyorspeed
+              }
+              if (spiralconveyorflagPrint == 1) {
+                for (var key in spiralconveyorresults) {
+                  if( spiralconveyorresults[key] != null && ! isNaN(spiralconveyorresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_spiralconveyor_l5.log', 'tt=' + spiralconveyortime + ',var=' + key + ',val=' + spiralconveyorresults[key] + '\n')
+                }
+                spiralconveyorflagPrint = 0
+                spiralconveyorsecStop = 0
+                spiralconveyortime = Date.now()
+              }
+        //------------------------------------------spiralconveyor----------------------------------------------
 
 
       if (Date.now() - initialTimeEOL >= 60000) { //NOTE: Uso de timestamp
@@ -1295,16 +1168,63 @@ function lectura(cappermaster) {
   setTimeout(close, 1000);
 }
 
+var PubNub = require('pubnub');
+var pubnub = new PubNub({
+publishKey:		"pub-c-8d024e5b-23bc-4ce8-ab68-b39b00347dfb",
+subscribeKey: 		"sub-c-c3b3aa54-b44b-11e7-895e-c6a8ff6a3d85",
+uuid: "Cue_PCL_LINE3"
+});
+
+var senderData = function (){
+pubnub.publish(publishConfig, function(status, response) {
+});}
+
+var files = fs.readdirSync("C:/PULSE/L5_LOGS/"); //Leer documentos
+var text2send=[];//Vector a enviar
+var i=0;
+var publishConfig;
+var secPubNub = 60*4+55;
+
+  setInterval(function(){
+//PubNub --------------------------------------------------------------------------------------------------------------------
+        if(secPubNub>=60*5){
+
+          var idle=function(){
+            i=0;
+            text2send=[];
+            for (var k=0;k<files.length;k++){//Verificar los archivos
+              var stats = fs.statSync("C:/PULSE/L5_LOGS/"+files[k]);
+              var mtime = new Date(stats.mtime).getTime();
+              if (mtime< (Date.now() - (15*60*1000))&&files[k].indexOf("serialbox")==-1){
+                text2send[i]=files[k];
+                i++;
+              }
+            }
+          };
+          secPubNub=0;
+          idle();
+          publishConfig = {
+            channel : "Cue_PCL_Monitor",
+            message : {
+                  line: "5",
+                  tt: Date.now(),
+                  machines:text2send
+
+                }
+          };
+          senderData();
+        }
+        secPubNub++;
+//PubNub --------------------------------------------------------------------------------------------------------------------
+  },1000);
+
 
 function close() {
-  console.log("leyendo");
-  //var obj= await lectura();
 
   the_session.close(function(err) {
     if (err) {
-      console.log("session closed failed ?");
+      null
     }
-    console.log("Session is closed");
   });
   client.disconnect(function() {});
 
