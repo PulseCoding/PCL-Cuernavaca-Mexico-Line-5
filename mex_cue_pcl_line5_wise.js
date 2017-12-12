@@ -275,7 +275,7 @@ function lectura(cappermaster) {
       Capfeederestado = dataValue.value.value;
 
       Capfeedermaster = {
-        "Status": Capfeederestado
+        "ST": Capfeederestado
       };
 
 
