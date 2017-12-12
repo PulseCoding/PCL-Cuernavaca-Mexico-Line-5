@@ -549,11 +549,11 @@ function lectura(cappermaster) {
                 SP: casesorterspeed
               }
               if (casesorterflagPrint == 1) {
-                for (var key in casesorterresults) {
+                /*for (var key in casesorterresults) {
                   if( casesorterresults[key] != null && ! isNaN(casesorterresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casesorter_l5.log', 'tt=' + casesortertime + ',var=' + key + ',val=' + casesorterresults[key] + '\n')
-                }
+                }*/
                 casesorterflagPrint = 0
                 casesortersecStop = 0
                 casesortertime = Date.now()
