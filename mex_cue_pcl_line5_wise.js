@@ -447,6 +447,10 @@ function lectura(cappermaster) {
                   cappersec = Date.now()
                 }
               }
+      if(capperspeed < 0)
+         {
+          capperspeed =0;
+         }
               capperresults = {
                 ST: Capperestado,
                 CPQIB: CntInCapper1,
@@ -811,6 +815,11 @@ function lectura(cappermaster) {
                   fillersec = Date.now()
                 }
               }
+      if (fillerspeed < 0)
+      {
+        fillerspeed=0;
+      }
+      
               fillerresults = {
                 ST: Fillerestado,
                 CPQI: CntInFiller,
@@ -896,6 +905,11 @@ function lectura(cappermaster) {
                   jarturnersec = Date.now()
                 }
               }
+      if(jarturnerspeed<0)
+      {
+        jarturnerspeed=0;
+      }
+      
               jarturnerresults = {
                 ST: Jarturnerestado,
                 CPQI: CntInJarturner,
