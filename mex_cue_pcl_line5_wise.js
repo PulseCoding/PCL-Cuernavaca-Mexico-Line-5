@@ -566,7 +566,7 @@ function lectura(cappermaster) {
     }
   });
 
-
+/*
   //////////////////////////////////////////Casepacker/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdInCount1", function(err, dataValue) {
     if (!err) {
@@ -733,7 +733,7 @@ function lectura(cappermaster) {
               }
               if (turnerflagPrint == 1) {
                 for (var key in turnerresults) {
-                  if( turnerresults[key] != null &&  turnerresults[key] != 0 &&! isNaN(turnerresults[key]) )
+                  if( turnerresults[key] != null  &&! isNaN(turnerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
                 }
@@ -745,7 +745,7 @@ function lectura(cappermaster) {
     }
   });
 
-
+*/
 
   //////////////////////////////////////////Filler/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + FillerCounter + "ProdInCount", function(err, dataValue) {
