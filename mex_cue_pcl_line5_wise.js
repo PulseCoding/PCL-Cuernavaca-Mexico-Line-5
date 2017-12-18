@@ -652,7 +652,7 @@ function lectura(cappermaster) {
               }
               if (casepackerflagPrint == 1) {
                 for (var key in casepackerresults) {
-                  if( casepackerresults[key] != null && ! isNaN(casepackerresults[key]) )
+                  if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n')
                 }
@@ -733,7 +733,7 @@ function lectura(cappermaster) {
               }
               if (turnerflagPrint == 1) {
                 for (var key in turnerresults) {
-                  if( turnerresults[key] != null && ! isNaN(turnerresults[key]) )
+                  if( turnerresults[key] != null &&  turnerresults[key] != 0 &&! isNaN(turnerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
                 }
