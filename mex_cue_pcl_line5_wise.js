@@ -210,11 +210,7 @@ var Sleeveapplicatorspeed = 0,
     CntInSleeveapplicator = 0,
     CntOutSleeveapplicator = 0,
     CntRjSleeveapplicator = 0,
-    Sleeveapplicatorestado = 0,
-    initialTimeSleeveapplicator = Date.now(),
-    Sleeveapplicatortime = 0,
-    SleeveapplicatorflagPrint = 0,
-    Sleeveapplicatormaster;
+    Sleeveapplicatorestado = 0
 var sleeveapplicatorct = null,
     sleeveapplicatorresults = null,
     sleeveapplicatoractual = 0,
@@ -227,9 +223,9 @@ var sleeveapplicatorct = null,
     sleeveapplicatorflagPrint = 0,
     sleeveapplicatorsecStop = 0,
     sleeveapplicatorONS = false,
-    sleeveapplicatortimeStop = 60, //NOTE: Timestop
+    sleeveapplicatortimeStop = 60, //NOTE: Timestop en segundos
     sleeveapplicatorWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
-    sleeveapplicatorflagRunning = false;
+    sleeveapplicatorflagRunning = false
 var spiralconveyorct = null,
     spiralconveyorresults = null,
     CntInspiralconveyor = null,
@@ -644,7 +640,7 @@ function lectura(cappermaster) {
                   casepackerflagStopped = true;
                   casepackerflagRunning = false;
                 }
-                
+
                 if(casepackerstate == 2)
                    {
                     if ( Casepackerestado == 3)
@@ -744,7 +740,7 @@ function lectura(cappermaster) {
                   turnerflagStopped = true;
                   turnerflagRunning = false;
                 }
-                
+
                   if(turnerstate == 2)
                    {
                     if ( Turnerestado == 3)
@@ -756,7 +752,7 @@ function lectura(cappermaster) {
                        turnerstate = 4;
                      }
                    }
-                
+
                 if(turnersecStop%turnertimeStop*3 == 0 ||turnersecStop == turnertimeStop ){
                   turnerflagPrint=1;
 
@@ -869,7 +865,7 @@ function lectura(cappermaster) {
       {
         fillerspeed=0;
       }
-      
+
               fillerresults = {
                 ST: Fillerestado,
                 CPQI: CntInFiller,
@@ -942,7 +938,7 @@ function lectura(cappermaster) {
       jarturnerflagStopped = true;
       jarturnerflagRunning = false;
     }
-    
+
     if(jarturnerstate == 2)
        {
         if ( Jarturnerestado == 3)
@@ -976,7 +972,7 @@ function lectura(cappermaster) {
       {
         jarturnerspeed=0;
       }
-      
+
               jarturnerresults = {
                 ST: jarturnerstate,
                 CPQI: CntInJarturner,
@@ -1113,81 +1109,71 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + SleeveapplicatorStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
       Sleeveapplicatorestado = dataValue.value.value;
-
- sleeveapplicatorct = CntOutSleeveapplicator; // NOTE: igualar al contador de salida
-  if (sleeveapplicatorONS == 0 && sleeveapplicatorct) {
-    sleeveapplicatorspeedTemp = sleeveapplicatorct;
-    sleeveapplicatorONS = 1;
-  }
-  if(sleeveapplicatorct > sleeveapplicatoractual){
-    if(sleeveapplicatorflagStopped){
-      sleeveapplicatorspeed = sleeveapplicatorct -sleeveapplicatorspeedTemp;
-      sleeveapplicatorspeedTemp = sleeveapplicatorct;
-      sleeveapplicatorsec = 0;
-    }
-    sleeveapplicatorsecStop = 0;
-    sleeveapplicatorsec++;
-    sleeveapplicatortime = Date.now();
-    sleeveapplicatorstate = 1;
-    sleeveapplicatorflagStopped = false;
-    sleeveapplicatorflagRunning = true;
-  } else if( sleeveapplicatorct == sleeveapplicatoractual ){
-    if(sleeveapplicatorsecStop == 0){
-      sleeveapplicatortime = Date.now();
-    }
-    sleeveapplicatorsecStop++;
-    if(sleeveapplicatorsecStop >= sleeveapplicatortimeStop){
-      sleeveapplicatorspeed = 0;
-      sleeveapplicatorstate = 2;
-      sleeveapplicatorspeedTemp = sleeveapplicatorct;
-      sleeveapplicatorflagStopped = true;
-      sleeveapplicatorflagRunning = false;
-    }
-    
-    if(sleeveapplicatorstate == 2)
-       {
-        if ( Sleeveapplicatorestado == 3)
-        {
-          sleeveapplicatorstate = 3;
-        }
-         if ( Sleeveapplicatorestado == 4)
-         {
-           sleeveapplicatorstate = 4;
-         }
-       }
-    if(sleeveapplicatorsecStop%sleeveapplicatortimeStop*3 == 0 ||sleeveapplicatorsecStop == sleeveapplicatortimeStop ){
-      sleeveapplicatorflagPrint=1;
-
-      if(sleeveapplicatorsecStop%sleeveapplicatortimeStop*3 == 0){
-        sleeveapplicatortime = Date.now();
-      }
-    }
-  }
-  sleeveapplicatoractual = sleeveapplicatorct;
-  if(sleeveapplicatorsec == sleeveapplicatorWorktime){
-    sleeveapplicatorsec = 0;
-    if(sleeveapplicatorflagRunning && sleeveapplicatorct){
-      sleeveapplicatorflagPrint = 1;
-      sleeveapplicatorsecStop = 0;
-      sleeveapplicatorspeed = sleeveapplicatorct - sleeveapplicatorspeedTemp;
-      sleeveapplicatorspeedTemp = sleeveapplicatorct;
-    }
-  }
-      Sleeveapplicatormaster = {
-        "ST":  sleeveapplicatorstate,
-        "CPQI": CntInSleeveapplicator,
-        "CPQO": CntOutSleeveapplicator,
-        "CPQR": CntRjSleeveapplicator,
-        "SP": Sleeveapplicatorspeed
-      };
-
-      if (SleeveapplicatorflagPrint == 1) {
-        for (var key in Sleeveapplicatormaster) {
-          if (Sleeveapplicatormaster[key] != null && !isNaN(Sleeveapplicatormaster[key]))
-            fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_sleeve_applicator_l5.log", 'tt=' + Sleeveapplicatortime + ',var=' + key + ',val=' + Sleeveapplicatormaster[key] + '\n');
-        }
-        SleeveapplicatorflagPrint = 0;
-      }
+        //------------------------------------------sleeveapplicator----------------------------------------------
+              sleeveapplicatorct = CntOutsleeveapplicator // NOTE: igualar al contador de salida
+              if (!sleeveapplicatorONS && sleeveapplicatorct) {
+                sleeveapplicatorspeedTemp = sleeveapplicatorct
+                sleeveapplicatorsec = Date.now()
+                sleeveapplicatorONS = true
+                sleeveapplicatortime = Date.now()
+              }
+              if(sleeveapplicatorct > sleeveapplicatoractual){
+                if(sleeveapplicatorflagStopped){
+                  sleeveapplicatorspeed = sleeveapplicatorct - sleeveapplicatorspeedTemp
+                  sleeveapplicatorspeedTemp = sleeveapplicatorct
+                  sleeveapplicatorsec = Date.now()
+                  sleeveapplicatortime = Date.now()
+                }
+                sleeveapplicatorsecStop = 0
+                sleeveapplicatorstate = 1
+                sleeveapplicatorflagStopped = false
+                sleeveapplicatorflagRunning = true
+              } else if( sleeveapplicatorct == sleeveapplicatoractual ){
+                if(sleeveapplicatorsecStop == 0){
+                  sleeveapplicatortime = Date.now()
+                  sleeveapplicatorsecStop = Date.now()
+                }
+                if( ( Date.now() - ( sleeveapplicatortimeStop * 1000 ) ) >= sleeveapplicatorsecStop ){
+                  sleeveapplicatorspeed = 0
+                  sleeveapplicatorstate = 2
+                  sleeveapplicatorspeedTemp = sleeveapplicatorct
+                  sleeveapplicatorflagStopped = true
+                  sleeveapplicatorflagRunning = false
+                  sleeveapplicatorflagPrint = 1
+                  if ( Sleeveapplicatorestado == 3)
+                    sleeveapplicatorstate = 3
+                  if ( Sleeveapplicatorestado == 4)
+                     sleeveapplicatorstate = 4
+                }
+              }
+              sleeveapplicatoractual = sleeveapplicatorct
+              if(Date.now() - 60000 * sleeveapplicatorWorktime >= sleeveapplicatorsec && sleeveapplicatorsecStop == 0){
+                if(sleeveapplicatorflagRunning && sleeveapplicatorct){
+                  sleeveapplicatorflagPrint = 1
+                  sleeveapplicatorsecStop = 0
+                  sleeveapplicatorspeed = sleeveapplicatorct - sleeveapplicatorspeedTemp
+                  sleeveapplicatorspeedTemp = sleeveapplicatorct
+                  sleeveapplicatorsec = Date.now()
+                }
+              }
+              sleeveapplicatorresults = {
+                ST:  sleeveapplicatorstate,
+                CPQI: CntInSleeveapplicator,
+                CPQO: CntOutSleeveapplicator,
+                CPQR: CntRjSleeveapplicator,
+                SP: sleeveapplicatorspeed
+              }
+              if (sleeveapplicatorflagPrint == 1) {
+                for (var key in sleeveapplicatorresults) {
+                  if( sleeveapplicatorresults[key] != null && ! isNaN(sleeveapplicatorresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_sleeve_applicator_l5.log', 'tt=' + sleeveapplicatortime + ',var=' + key + ',val=' + sleeveapplicatorresults[key] + '\n')
+                }
+                sleeveapplicatorflagPrint = 0
+                sleeveapplicatorsecStop = 0
+                sleeveapplicatortime = Date.now()
+              }
+        //------------------------------------------sleeveapplicator----------------------------------------------
     }
   });
 
