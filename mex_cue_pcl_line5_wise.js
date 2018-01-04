@@ -566,7 +566,7 @@ function lectura(cappermaster) {
     }
   });
 
-/*
+
   //////////////////////////////////////////Casepacker/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdInCount1", function(err, dataValue) {
     if (!err) {
@@ -600,50 +600,67 @@ function lectura(cappermaster) {
 
 
         //------------------------------------------casepacker----------------------------------------------
-              casepackerct = CntOutCasepacker // NOTE: igualar al contador de salida
-              if (!casepackerONS && casepackerct) {
-                casepackerspeedTemp = casepackerct
-                casepackersec = Date.now()
-                casepackerONS = true
-                casepackertime = Date.now()
+            casepackerct = CntOutcasepacker; // NOTE: igualar al contador de salida
+              if (casepackerONS == 0 && casepackerct) {
+                casepackerspeedTemp = casepackerct;
+                casepackerONS = 1;
               }
               if(casepackerct > casepackeractual){
                 if(casepackerflagStopped){
-                  casepackerspeed = casepackerct - casepackerspeedTemp
-                  casepackerspeedTemp = casepackerct
-                  casepackersec = Date.now()
-                  casepackertime = Date.now()
+                  casepackerspeed = casepackerct -casepackerspeedTemp;
+                  casepackerspeedTemp = casepackerct;
+                  casepackersec = 0;
                 }
-                casepackersecStop = 0
-                casepackerstate = 1
-                casepackerflagStopped = false
-                casepackerflagRunning = true
+                casepackersecStop = 0;
+                casepackersec++;
+                casepackertime = Date.now();
+                casepackerstate = 1;
+                casepackerflagStopped = false;
+                casepackerflagRunning = true;
               } else if( casepackerct == casepackeractual ){
                 if(casepackersecStop == 0){
-                  casepackertime = Date.now()
-                  casepackersecStop = Date.now()
+                  casepackertime = Date.now();
                 }
-                if( ( Date.now() - ( casepackertimeStop * 1000 ) ) >= casepackersecStop ){
-                  casepackerspeed = 0
-                  casepackerstate = 2
-                  casepackerspeedTemp = casepackerct
-                  casepackerflagStopped = true
-                  casepackerflagRunning = false
-                  casepackerflagPrint = 1
+                casepackersecStop++;
+                if(casepackersecStop >= casepackertimeStop){
+                  casepackerspeed = 0;
+                  casepackerstate = 2;
+                  casepackerspeedTemp = casepackerct;
+                  casepackerflagStopped = true;
+                  casepackerflagRunning = false;
+                }
+                
+                if(casepackerstate == 2)
+                   {
+                    if ( Casepackerestado == 3)
+                    {
+                      casepackerstate = 3;
+                    }
+                     if ( Casepackerestado == 4)
+                     {
+                       casepackerstate = 4;
+                     }
+                   }
+                if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
+                  casepackerflagPrint=1;
+
+                  if(casepackersecStop%casepackertimeStop*3 == 0){
+                    casepackertime = Date.now();
+                  }
                 }
               }
-              casepackeractual = casepackerct
-              if(Date.now() - 60000 * casepackerWorktime >= casepackersec && casepackersecStop == 0){
+              casepackeractual = casepackerct;
+              if(casepackersec == casepackerWorktime){
+                casepackersec = 0;
                 if(casepackerflagRunning && casepackerct){
-                  casepackerflagPrint = 1
-                  casepackersecStop = 0
-                  casepackerspeed = casepackerct - casepackerspeedTemp
-                  casepackerspeedTemp = casepackerct
-                  casepackersec = Date.now()
+                  casepackerflagPrint = 1;
+                  casepackersecStop = 0;
+                  casepackerspeed = casepackerct - casepackerspeedTemp;
+                  casepackerspeedTemp = casepackerct;
                 }
               }
               casepackerresults = {
-                ST: Casepackerestado,
+                ST: casepackerstate,
                 CPQIB: CntInCasepacker1,
                 CPQI: CntInCasepacker2,
                 CPQO: CntOutCasepacker,
@@ -683,50 +700,68 @@ function lectura(cappermaster) {
       Turnerestado = dataValue.value.value;
 
         //------------------------------------------turner----------------------------------------------
-              turnerct = CntOutTurner // NOTE: igualar al contador de salida
-              if (!turnerONS && turnerct) {
-                turnerspeedTemp = turnerct
-                turnersec = Date.now()
-                turnerONS = true
-                turnertime = Date.now()
+              turnerct = CntOutTurner; // NOTE: igualar al contador de salida
+              if (turnerONS == 0 && turnerct) {
+                turnerspeedTemp = turnerct;
+                turnerONS = 1;
               }
               if(turnerct > turneractual){
                 if(turnerflagStopped){
-                  turnerspeed = turnerct - turnerspeedTemp
-                  turnerspeedTemp = turnerct
-                  turnersec = Date.now()
-                  turnertime = Date.now()
+                  turnerspeed = turnerct -turnerspeedTemp;
+                  turnerspeedTemp = turnerct;
+                  turnersec = 0;
                 }
-                turnersecStop = 0
-                turnerstate = 1
-                turnerflagStopped = false
-                turnerflagRunning = true
+                turnersecStop = 0;
+                turnersec++;
+                turnertime = Date.now();
+                turnerstate = 1;
+                turnerflagStopped = false;
+                turnerflagRunning = true;
               } else if( turnerct == turneractual ){
                 if(turnersecStop == 0){
-                  turnertime = Date.now()
-                  turnersecStop = Date.now()
+                  turnertime = Date.now();
                 }
-                if( ( Date.now() - ( turnertimeStop * 1000 ) ) >= turnersecStop ){
-                  turnerspeed = 0
-                  turnerstate = 2
-                  turnerspeedTemp = turnerct
-                  turnerflagStopped = true
-                  turnerflagRunning = false
-                  turnerflagPrint = 1
+                turnersecStop++;
+                if(turnersecStop >= turnertimeStop){
+                  turnerspeed = 0;
+                  turnerstate = 2;
+                  turnerspeedTemp = turnerct;
+                  turnerflagStopped = true;
+                  turnerflagRunning = false;
+                }
+                
+                  if(turnerstate == 2)
+                   {
+                    if ( Turnerestado == 3)
+                    {
+                      turnerstate = 3;
+                    }
+                     if ( Turnerestado == 4)
+                     {
+                       turnerstate = 4;
+                     }
+                   }
+                
+                if(turnersecStop%turnertimeStop*3 == 0 ||turnersecStop == turnertimeStop ){
+                  turnerflagPrint=1;
+
+                  if(turnersecStop%turnertimeStop*3 == 0){
+                    turnertime = Date.now();
+                  }
                 }
               }
-              turneractual = turnerct
-              if(Date.now() - 60000 * turnerWorktime >= turnersec && turnersecStop == 0){
+              turneractual = turnerct;
+              if(turnersec == turnerWorktime){
+                turnersec = 0;
                 if(turnerflagRunning && turnerct){
-                  turnerflagPrint = 1
-                  turnersecStop = 0
-                  turnerspeed = turnerct - turnerspeedTemp
-                  turnerspeedTemp = turnerct
-                  turnersec = Date.now()
+                  turnerflagPrint = 1;
+                  turnersecStop = 0;
+                  turnerspeed = turnerct - turnerspeedTemp;
+                  turnerspeedTemp = turnerct;
                 }
               }
               turnerresults = {
-                ST: Turnerestado,
+                ST: turnerstate,
                 CPQI: CntInTurner,
                 CPQO: CntOutTurner,
                 SP: turnerspeed
@@ -745,7 +780,7 @@ function lectura(cappermaster) {
     }
   });
 
-*/
+
 
   //////////////////////////////////////////Filler/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + FillerCounter + "ProdInCount", function(err, dataValue) {
