@@ -215,6 +215,21 @@ var Sleeveapplicatorspeed = 0,
     Sleeveapplicatortime = 0,
     SleeveapplicatorflagPrint = 0,
     Sleeveapplicatormaster;
+var sleeveapplicatorct = null,
+    sleeveapplicatorresults = null,
+    sleeveapplicatoractual = 0,
+    sleeveapplicatortime = 0,
+    sleeveapplicatorsec = 0,
+    sleeveapplicatorflagStopped = false,
+    sleeveapplicatorstate = 0,
+    sleeveapplicatorspeed = 0,
+    sleeveapplicatorspeedTemp = 0,
+    sleeveapplicatorflagPrint = 0,
+    sleeveapplicatorsecStop = 0,
+    sleeveapplicatorONS = false,
+    sleeveapplicatortimeStop = 60, //NOTE: Timestop
+    sleeveapplicatorWorktime = 0.99, //NOTE: Intervalo de tiempo en minutos para actualizar el log
+    sleeveapplicatorflagRunning = false;
 var spiralconveyorct = null,
     spiralconveyorresults = null,
     CntInspiralconveyor = null,
@@ -898,55 +913,72 @@ function lectura(cappermaster) {
       Jarturnerestado = dataValue.value.value;
 
         //------------------------------------------jarturner----------------------------------------------
-              jarturnerct = CntOutJarturner // NOTE: igualar al contador de salida
-              if (!jarturnerONS && jarturnerct) {
-                jarturnerspeedTemp = jarturnerct
-                jarturnersec = Date.now()
-                jarturnerONS = true
-                jarturnertime = Date.now()
-              }
-              if(jarturnerct > jarturneractual){
-                if(jarturnerflagStopped){
-                  jarturnerspeed = jarturnerct - jarturnerspeedTemp
-                  jarturnerspeedTemp = jarturnerct
-                  jarturnersec = Date.now()
-                  jarturnertime = Date.now()
-                }
-                jarturnersecStop = 0
-                jarturnerstate = 1
-                jarturnerflagStopped = false
-                jarturnerflagRunning = true
-              } else if( jarturnerct == jarturneractual ){
-                if(jarturnersecStop == 0){
-                  jarturnertime = Date.now()
-                  jarturnersecStop = Date.now()
-                }
-                if( ( Date.now() - ( jarturnertimeStop * 1000 ) ) >= jarturnersecStop ){
-                  jarturnerspeed = 0
-                  jarturnerstate = 2
-                  jarturnerspeedTemp = jarturnerct
-                  jarturnerflagStopped = true
-                  jarturnerflagRunning = false
-                  jarturnerflagPrint = 1
-                }
-              }
-              jarturneractual = jarturnerct
-              if(Date.now() - 60000 * jarturnerWorktime >= jarturnersec && jarturnersecStop == 0){
-                if(jarturnerflagRunning && jarturnerct){
-                  jarturnerflagPrint = 1
-                  jarturnersecStop = 0
-                  jarturnerspeed = jarturnerct - jarturnerspeedTemp
-                  jarturnerspeedTemp = jarturnerct
-                  jarturnersec = Date.now()
-                }
-              }
+ jarturnerct = CntOutJarturner; // NOTE: igualar al contador de salida
+  if (jarturnerONS == 0 && jarturnerct) {
+    jarturnerspeedTemp = jarturnerct;
+    jarturnerONS = 1;
+  }
+  if(jarturnerct > jarturneractual){
+    if(jarturnerflagStopped){
+      jarturnerspeed = jarturnerct -jarturnerspeedTemp;
+      jarturnerspeedTemp = jarturnerct;
+      jarturnersec = 0;
+    }
+    jarturnersecStop = 0;
+    jarturnersec++;
+    jarturnertime = Date.now();
+    jarturnerstate = 1;
+    jarturnerflagStopped = false;
+    jarturnerflagRunning = true;
+  } else if( jarturnerct == jarturneractual ){
+    if(jarturnersecStop == 0){
+      jarturnertime = Date.now();
+    }
+    jarturnersecStop++;
+    if(jarturnersecStop >= jarturnertimeStop){
+      jarturnerspeed = 0;
+      jarturnerstate = 2;
+      jarturnerspeedTemp = jarturnerct;
+      jarturnerflagStopped = true;
+      jarturnerflagRunning = false;
+    }
+    
+    if(jarturnerstate == 2)
+       {
+        if ( Jarturnerestado == 3)
+        {
+          jarturnerstate = 3;
+        }
+         if ( Jarturnerestado == 4)
+         {
+           jarturnerstate = 4;
+         }
+       }
+    if(jarturnersecStop%jarturnertimeStop*3 == 0 ||jarturnersecStop == jarturnertimeStop ){
+      jarturnerflagPrint=1;
+
+      if(jarturnersecStop%jarturnertimeStop*3 == 0){
+        jarturnertime = Date.now();
+      }
+    }
+  }
+  jarturneractual = jarturnerct;
+  if(jarturnersec == jarturnerWorktime){
+    jarturnersec = 0;
+    if(jarturnerflagRunning && jarturnerct){
+      jarturnerflagPrint = 1;
+      jarturnersecStop = 0;
+      jarturnerspeed = jarturnerct - jarturnerspeedTemp;
+      jarturnerspeedTemp = jarturnerct;
+    }
+  }
       if(jarturnerspeed<0)
       {
         jarturnerspeed=0;
       }
       
               jarturnerresults = {
-                ST: Jarturnerestado,
+                ST: jarturnerstate,
                 CPQI: CntInJarturner,
                 CPQO: CntOutJarturner,
                 SP: jarturnerspeed
@@ -1082,15 +1114,67 @@ function lectura(cappermaster) {
     if (!err) {
       Sleeveapplicatorestado = dataValue.value.value;
 
-      if (Date.now() - initialTimeSleeveapplicator >= 60000) { //NOTE: Uso de timestamp
-        SleeveapplicatorflagPrint = 1;
-        Sleeveapplicatortime = Date.now();
-        initialTimeSleeveapplicator = Date.now();
+ sleeveapplicatorct = CntOutSleeveapplicator; // NOTE: igualar al contador de salida
+  if (sleeveapplicatorONS == 0 && sleeveapplicatorct) {
+    sleeveapplicatorspeedTemp = sleeveapplicatorct;
+    sleeveapplicatorONS = 1;
+  }
+  if(sleeveapplicatorct > sleeveapplicatoractual){
+    if(sleeveapplicatorflagStopped){
+      sleeveapplicatorspeed = sleeveapplicatorct -sleeveapplicatorspeedTemp;
+      sleeveapplicatorspeedTemp = sleeveapplicatorct;
+      sleeveapplicatorsec = 0;
+    }
+    sleeveapplicatorsecStop = 0;
+    sleeveapplicatorsec++;
+    sleeveapplicatortime = Date.now();
+    sleeveapplicatorstate = 1;
+    sleeveapplicatorflagStopped = false;
+    sleeveapplicatorflagRunning = true;
+  } else if( sleeveapplicatorct == sleeveapplicatoractual ){
+    if(sleeveapplicatorsecStop == 0){
+      sleeveapplicatortime = Date.now();
+    }
+    sleeveapplicatorsecStop++;
+    if(sleeveapplicatorsecStop >= sleeveapplicatortimeStop){
+      sleeveapplicatorspeed = 0;
+      sleeveapplicatorstate = 2;
+      sleeveapplicatorspeedTemp = sleeveapplicatorct;
+      sleeveapplicatorflagStopped = true;
+      sleeveapplicatorflagRunning = false;
+    }
+    
+    if(sleeveapplicatorstate == 2)
+       {
+        if ( Sleeveapplicatorestado == 3)
+        {
+          sleeveapplicatorstate = 3;
+        }
+         if ( Sleeveapplicatorestado == 4)
+         {
+           sleeveapplicatorstate = 4;
+         }
+       }
+    if(sleeveapplicatorsecStop%sleeveapplicatortimeStop*3 == 0 ||sleeveapplicatorsecStop == sleeveapplicatortimeStop ){
+      sleeveapplicatorflagPrint=1;
+
+      if(sleeveapplicatorsecStop%sleeveapplicatortimeStop*3 == 0){
+        sleeveapplicatortime = Date.now();
       }
-
-
+    }
+  }
+  sleeveapplicatoractual = sleeveapplicatorct;
+  if(sleeveapplicatorsec == sleeveapplicatorWorktime){
+    sleeveapplicatorsec = 0;
+    if(sleeveapplicatorflagRunning && sleeveapplicatorct){
+      sleeveapplicatorflagPrint = 1;
+      sleeveapplicatorsecStop = 0;
+      sleeveapplicatorspeed = sleeveapplicatorct - sleeveapplicatorspeedTemp;
+      sleeveapplicatorspeedTemp = sleeveapplicatorct;
+    }
+  }
       Sleeveapplicatormaster = {
-        "ST": Sleeveapplicatorestado,
+        "ST":  sleeveapplicatorstate,
         "CPQI": CntInSleeveapplicator,
         "CPQO": CntOutSleeveapplicator,
         "CPQR": CntRjSleeveapplicator,
