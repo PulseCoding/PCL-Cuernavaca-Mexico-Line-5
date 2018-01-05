@@ -939,9 +939,9 @@ function lectura(cappermaster) {
                   jarturnerflagStopped = true
                   jarturnerflagRunning = false
                   jarturnerflagPrint = 1
-                  if ( jarturnerestado == 3)
+                  if ( Jarturnerestado == 3)
                     jarturnerstate = 3
-                  if ( jarturnerestado == 4)
+                  if ( Jarturnerestado == 4)
                      jarturnerstate = 4
                 }
               }
