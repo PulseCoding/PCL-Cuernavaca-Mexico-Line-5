@@ -464,8 +464,8 @@ function lectura(cappermaster) {
          }
               capperresults = {
                 ST: Capperestado,
-                CPQIB: CntInCapper1,
-                CPQI: CntInCapper2,
+                //CPQIB: CntInCapper1,
+                CPQI: CntInCapper1,
                 CPQO: CntOutCapper,
                 CPQR: CntRjCapper,
                 SP: capperspeed
