@@ -692,106 +692,7 @@ function lectura(cappermaster) {
     }
   });
 
-  //////////////////////////////////////////Turner/////////////////////////////////////////////////////////////////////
-  the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdInCount", function(err, dataValue) {
-    if (!err) {
-      CntInTurner = dataValue.value.value;
-
-    }
-  });
-
-  the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdOutCount", function(err, dataValue) {
-    if (!err) {
-      CntOutTurner = dataValue.value.value;
-    }
-  });
-
-  the_session.readVariableValue("ns=2;" + canal + disp + TurnerStatus + "MchStatus", function(err, dataValue) {
-    if (!err) {
-      Turnerestado = dataValue.value.value;
-
-        //------------------------------------------turner----------------------------------------------
-              turnerct = CntOutTurner; // NOTE: igualar al contador de salida
-              if (turnerONS == 0 && turnerct) {
-                turnerspeedTemp = turnerct;
-                turnerONS = 1;
-              }
-              if(turnerct > turneractual){
-                if(turnerflagStopped){
-                  turnerspeed = turnerct -turnerspeedTemp;
-                  turnerspeedTemp = turnerct;
-                  turnersec = 0;
-                }
-                turnersecStop = 0;
-                turnersec++;
-                turnertime = Date.now();
-                turnerstate = 1;
-                turnerflagStopped = false;
-                turnerflagRunning = true;
-              } else if( turnerct == turneractual ){
-                if(turnersecStop == 0){
-                  turnertime = Date.now();
-                }
-                turnersecStop++;
-                if(turnersecStop >= turnertimeStop){
-                  turnerspeed = 0;
-                  turnerstate = 2;
-                  turnerspeedTemp = turnerct;
-                  turnerflagStopped = true;
-                  turnerflagRunning = false;
-                }
-
-                  if(turnerstate == 2)
-                   {
-                    if ( Turnerestado == 3)
-                    {
-                      turnerstate = 3;
-                    }
-                     if ( Turnerestado == 4)
-                     {
-                       turnerstate = 4;
-                     }
-                   }
-
-                if(turnersecStop%turnertimeStop*3 == 0 ||turnersecStop == turnertimeStop ){
-                  turnerflagPrint=1;
-
-                  if(turnersecStop%turnertimeStop*3 == 0){
-                    turnertime = Date.now();
-                  }
-                }
-              }
-              turneractual = turnerct;
-              if(turnersec == turnerWorktime){
-                turnersec = 0;
-                if(turnerflagRunning && turnerct){
-                  turnerflagPrint = 1;
-                  turnersecStop = 0;
-                  turnerspeed = turnerct - turnerspeedTemp;
-                  turnerspeedTemp = turnerct;
-                }
-              }
-              turnerresults = {
-                ST: turnerstate,
-                CPQI: CntInTurner,
-                CPQO: CntOutTurner,
-                SP: turnerspeed
-              }
-              if (turnerflagPrint == 1) {
-                for (var key in turnerresults) {
-                  if( turnerresults[key] != null  &&! isNaN(turnerresults[key]) )
-                  //NOTE: Cambiar path
-                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
-                }
-                turnerflagPrint = 0
-                turnersecStop = 0
-                turnertime = Date.now()
-              }
-        //------------------------------------------turner----------------------------------------------
-    }
-  });
-
-
+ 
 
   //////////////////////////////////////////Filler/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + FillerCounter + "ProdInCount", function(err, dataValue) {
@@ -1159,7 +1060,104 @@ function lectura(cappermaster) {
     }
   });
 
+ //////////////////////////////////////////Turner/////////////////////////////////////////////////////////////////////
+  the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdInCount", function(err, dataValue) {
+    if (!err) {
+      CntInTurner = dataValue.value.value;
 
+    }
+  });
+
+  the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdOutCount", function(err, dataValue) {
+    if (!err) {
+      CntOutTurner = dataValue.value.value;
+    }
+  });
+
+  the_session.readVariableValue("ns=2;" + canal + disp + TurnerStatus + "MchStatus", function(err, dataValue) {
+    if (!err) {
+      Turnerestado = dataValue.value.value;
+
+        //------------------------------------------turner----------------------------------------------
+              turnerct = CntOutTurner; // NOTE: igualar al contador de salida
+              if (turnerONS == 0 && turnerct) {
+                turnerspeedTemp = turnerct;
+                turnerONS = 1;
+              }
+              if(turnerct > turneractual){
+                if(turnerflagStopped){
+                  turnerspeed = turnerct -turnerspeedTemp;
+                  turnerspeedTemp = turnerct;
+                  turnersec = 0;
+                }
+                turnersecStop = 0;
+                turnersec++;
+                turnertime = Date.now();
+                turnerstate = 1;
+                turnerflagStopped = false;
+                turnerflagRunning = true;
+              } else if( turnerct == turneractual ){
+                if(turnersecStop == 0){
+                  turnertime = Date.now();
+                }
+                turnersecStop++;
+                if(turnersecStop >= turnertimeStop){
+                  turnerspeed = 0;
+                  turnerstate = 2;
+                  turnerspeedTemp = turnerct;
+                  turnerflagStopped = true;
+                  turnerflagRunning = false;
+                }
+
+                  if(turnerstate == 2)
+                   {
+                    if ( Turnerestado == 3)
+                    {
+                      turnerstate = 3;
+                    }
+                     if ( Turnerestado == 4)
+                     {
+                       turnerstate = 4;
+                     }
+                   }
+
+                if(turnersecStop%turnertimeStop*3 == 0 ||turnersecStop == turnertimeStop ){
+                  turnerflagPrint=1;
+
+                  if(turnersecStop%turnertimeStop*3 == 0){
+                    turnertime = Date.now();
+                  }
+                }
+              }
+              turneractual = turnerct;
+              if(turnersec == turnerWorktime){
+                turnersec = 0;
+                if(turnerflagRunning && turnerct){
+                  turnerflagPrint = 1;
+                  turnersecStop = 0;
+                  turnerspeed = turnerct - turnerspeedTemp;
+                  turnerspeedTemp = turnerct;
+                }
+              }
+              turnerresults = {
+                ST: turnerstate,
+                CPQI: CntOutSleeveapplicator,
+                CPQO: CntOutTurner,
+                SP: turnerspeed
+              }
+              if (turnerflagPrint == 1) {
+                for (var key in turnerresults) {
+                  if( turnerresults[key] != null  &&! isNaN(turnerresults[key]) )
+                  //NOTE: Cambiar path
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
+                }
+                turnerflagPrint = 0
+                turnersecStop = 0
+                turnertime = Date.now()
+              }
+        //------------------------------------------turner----------------------------------------------
+    }
+  });
 
 
   //////////////////////////////////////////Spiralconveyor/////////////////////////////////////////////////////////////////////
