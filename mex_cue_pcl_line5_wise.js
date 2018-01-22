@@ -1142,7 +1142,7 @@ function lectura(cappermaster) {
               turnerresults = {
                 ST: turnerstate,
                 CPQI: CntOutSleeveapplicator,
-                CPQO: CntOutTurner,
+                CPQO: CntOutFiller,
                 SP: turnerspeed
               }
               if (turnerflagPrint == 1) {
