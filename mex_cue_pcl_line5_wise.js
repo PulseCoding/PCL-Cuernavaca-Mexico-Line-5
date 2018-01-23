@@ -1079,7 +1079,7 @@ function lectura(cappermaster) {
       Turnerestado = dataValue.value.value;
 
         //------------------------------------------turner----------------------------------------------
-              turnerct = CntOutTurner; // NOTE: igualar al contador de salida
+              turnerct = CntOutFiller; // NOTE: igualar al contador de salida
               if (turnerONS == 0 && turnerct) {
                 turnerspeedTemp = turnerct;
                 turnerONS = 1;
