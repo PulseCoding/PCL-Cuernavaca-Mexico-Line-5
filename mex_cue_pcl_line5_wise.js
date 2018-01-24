@@ -1079,7 +1079,7 @@ function lectura(cappermaster) {
       Turnerestado = dataValue.value.value;
 
         //------------------------------------------turner----------------------------------------------
-              turnerct = CntOutFiller; // NOTE: igualar al contador de salida
+              turnerct = CntInFiller; // NOTE: igualar al contador de salida
               if (turnerONS == 0 && turnerct) {
                 turnerspeedTemp = turnerct;
                 turnerONS = 1;
@@ -1140,10 +1140,10 @@ function lectura(cappermaster) {
                 }
               }
               turnerresults = {
-                ST: turnerstate,
+                ST: Fillerestado,
                 CPQI: CntOutSleeveapplicator,
-                CPQO: CntOutFiller,
-                SP: turnerspeed
+                CPQO: CntInFiller,
+                SP: fillerspeed
               }
               if (turnerflagPrint == 1) {
                 for (var key in turnerresults) {
