@@ -692,7 +692,7 @@ function lectura(cappermaster) {
     }
   });
 
- 
+
 
   //////////////////////////////////////////Filler/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + FillerCounter + "ProdInCount", function(err, dataValue) {
@@ -1061,12 +1061,25 @@ function lectura(cappermaster) {
   });
 
  //////////////////////////////////////////Turner/////////////////////////////////////////////////////////////////////
+  the_session.readVariableValue("ns=2;" + canal + disp + SleeveapplicatorCounter + "ProdOutCount", function(err, dataValue) {
+    if (!err) {
+      CntInTurner = dataValue.value.value;
+    }
+  });
+
+  the_session.readVariableValue("ns=2;" + canal + disp + FillerCounter + "ProdInCount", function(err, dataValue) {
+      if (!err) {
+        CntInFiller = dataValue.value.value;
+
+/*      }
+    });
   the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdInCount", function(err, dataValue) {
     if (!err) {
       CntInTurner = dataValue.value.value;
 
     }
   });
+
 
   the_session.readVariableValue("ns=2;" + canal + disp + TurnerCounter + "ProdOutCount", function(err, dataValue) {
     if (!err) {
@@ -1077,7 +1090,7 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + TurnerStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
       Turnerestado = dataValue.value.value;
-
+*/
         //------------------------------------------turner----------------------------------------------
               turnerct = CntInFiller; // NOTE: igualar al contador de salida
               if (turnerONS == 0 && turnerct) {
@@ -1140,8 +1153,8 @@ function lectura(cappermaster) {
                 }
               }
               turnerresults = {
-                ST: Fillerestado,
-                CPQI: CntOutSleeveapplicator,
+                ST: turnerstate,
+                CPQI: CntInTurner,
                 CPQO: CntInFiller,
                 SP: fillerspeed
               }
