@@ -1092,75 +1092,61 @@ function lectura(cappermaster) {
       Turnerestado = dataValue.value.value;
 */
         //------------------------------------------turner----------------------------------------------
-              turnerct = CntInFiller; // NOTE: igualar al contador de salida
-              if (turnerONS == 0 && turnerct) {
-                turnerspeedTemp = turnerct;
-                turnerONS = 1;
+              turnerct = CntInFiller // NOTE: igualar al contador de salida
+              if (!turnerONS && turnerct) {
+                turnerspeedTemp = turnerct
+                turnersec = Date.now()
+                turnerONS = true
+                turnertime = Date.now()
               }
               if(turnerct > turneractual){
                 if(turnerflagStopped){
-                  turnerspeed = turnerct -turnerspeedTemp;
-                  turnerspeedTemp = turnerct;
-                  turnersec = 0;
+                  turnerspeed = turnerct - turnerspeedTemp
+                  turnerspeedTemp = turnerct
+                  turnersec = Date.now()
+                  turnertime = Date.now()
                 }
-                turnersecStop = 0;
-                turnersec++;
-                turnertime = Date.now();
-                turnerstate = 1;
-                turnerflagStopped = false;
-                turnerflagRunning = true;
+                turnersecStop = 0
+                turnerstate = 1
+                turnerflagStopped = false
+                turnerflagRunning = true
               } else if( turnerct == turneractual ){
                 if(turnersecStop == 0){
-                  turnertime = Date.now();
+                  turnertime = Date.now()
+                  turnersecStop = Date.now()
                 }
-                turnersecStop++;
-                if(turnersecStop >= turnertimeStop){
-                  turnerspeed = 0;
-                  turnerstate = 2;
-                  turnerspeedTemp = turnerct;
-                  turnerflagStopped = true;
-                  turnerflagRunning = false;
-                }
-
-                  if(turnerstate == 2)
-                   {
-                    if ( Turnerestado == 3)
-                    {
-                      turnerstate = 3;
-                    }
-                     if ( Turnerestado == 4)
-                     {
-                       turnerstate = 4;
-                     }
-                   }
-
-                if(turnersecStop%turnertimeStop*3 == 0 ||turnersecStop == turnertimeStop ){
-                  turnerflagPrint=1;
-
-                  if(turnersecStop%turnertimeStop*3 == 0){
-                    turnertime = Date.now();
-                  }
+                if( ( Date.now() - ( turnertimeStop * 1000 ) ) >= turnersecStop ){
+                  turnerspeed = 0
+                  turnerstate = 2
+                  turnerspeedTemp = turnerct
+                  turnerflagStopped = true
+                  turnerflagRunning = false
+                  turnerflagPrint = 1
+                  if ( turnerestado == 3)
+                    turnerstate = 3
+                  if ( turnerestado == 4)
+                     turnerstate = 4
                 }
               }
-              turneractual = turnerct;
-              if(turnersec == turnerWorktime){
-                turnersec = 0;
+              turneractual = turnerct
+              if(Date.now() - 60000 * turnerWorktime >= turnersec && turnersecStop == 0){
                 if(turnerflagRunning && turnerct){
-                  turnerflagPrint = 1;
-                  turnersecStop = 0;
-                  turnerspeed = turnerct - turnerspeedTemp;
-                  turnerspeedTemp = turnerct;
+                  turnerflagPrint = 1
+                  turnersecStop = 0
+                  turnerspeed = turnerct - turnerspeedTemp
+                  turnerspeedTemp = turnerct
+                  turnersec = Date.now()
                 }
               }
               turnerresults = {
                 ST: turnerstate,
                 CPQI: CntInTurner,
                 CPQO: CntInFiller,
-                SP: fillerspeed
+                SP: turnerspeed
               }
               if (turnerflagPrint == 1) {
                 for (var key in turnerresults) {
-                  if( turnerresults[key] != null  &&! isNaN(turnerresults[key]) )
+                  if( turnerresults[key] != null && ! isNaN(turnerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_turner_l5.log', 'tt=' + turnertime + ',var=' + key + ',val=' + turnerresults[key] + '\n')
                 }
