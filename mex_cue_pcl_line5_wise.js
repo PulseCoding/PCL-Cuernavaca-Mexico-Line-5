@@ -1122,10 +1122,10 @@ function lectura(cappermaster) {
                   turnerflagStopped = true
                   turnerflagRunning = false
                   turnerflagPrint = 1
-                  if ( turnerestado == 3)
+                  /*if ( turnerestado == 3)
                     turnerstate = 3
                   if ( turnerestado == 4)
-                     turnerstate = 4
+                     turnerstate = 4*/
                 }
               }
               turneractual = turnerct
