@@ -672,9 +672,9 @@ function lectura(cappermaster) {
                 ST: casepackerstate,
                 //CPQIB: CntInCasepacker1,
                 //CPQI: CntInCasepacker2,
-                CPQI: Math.trunc(CntOutCasepacker/12),
+                CPQI: CntOutCasepacker,
                 //CPQO: CntOutCasepacker,
-                CPQO: CntOutCasepacker,
+                CPQO: Math.trunc(CntOutCasepacker/12),
                 //CPQR: CntRjCasepacker,
                 SP: casepackerspeed
               }
