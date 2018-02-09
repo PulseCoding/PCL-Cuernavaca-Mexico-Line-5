@@ -1253,7 +1253,8 @@ function lectura(cappermaster) {
       }
 
       if (EOLflagPrint == 1) {
-        fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + (CntInEOL1 + CntInEOL2) + '\n');
+        //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + (CntInEOL1 + CntInEOL2) + '\n');
+        fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + CntOutCasepacker + '\n');
         EOLflagPrint = 0;
       }
 
