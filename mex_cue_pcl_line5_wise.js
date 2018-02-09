@@ -400,6 +400,7 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + CapperCounter + "ProdOutCount", function(err, dataValue) {
     if (!err) {
       CntOutCapper = dataValue.value.value;
+      CntOutCasepacker = dataValue.value.value;
     }
   });
 
@@ -581,37 +582,34 @@ function lectura(cappermaster) {
   //////////////////////////////////////////Casepacker/////////////////////////////////////////////////////////////////////
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdInCount1", function(err, dataValue) {
     if (!err) {
-      CntInCasepacker1 = dataValue.value.value;
-
+      //CntInCasepacker1 = dataValue.value.value;
     }
   });
 
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdInCount2", function(err, dataValue) {
     if (!err) {
-      CntInCasepacker2 = dataValue.value.value;
+      //CntInCasepacker2 = dataValue.value.value;
     }
   });
 
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdOutCount", function(err, dataValue) {
     if (!err) {
-      CntOutCasepacker = dataValue.value.value;
+      //CntOutCasepacker = dataValue.value.value;
     }
   });
 
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdRejCount", function(err, dataValue) {
     if (!err) {
-      CntRjCasepacker = dataValue.value.value;
-
+      //CntRjCasepacker = dataValue.value.value;
     }
 
   });
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
-      Casepackerestado = dataValue.value.value;
-
+      //Casepackerestado = dataValue.value.value;
 
         //------------------------------------------casepacker----------------------------------------------
-            casepackerct = CntOutcasepacker; // NOTE: igualar al contador de salida
+            casepackerct = CntOutCasepacker; // NOTE: igualar al contador de salida
               if (casepackerONS == 0 && casepackerct) {
                 casepackerspeedTemp = casepackerct;
                 casepackerONS = 1;
@@ -672,18 +670,20 @@ function lectura(cappermaster) {
               }
               casepackerresults = {
                 ST: casepackerstate,
-                CPQIB: CntInCasepacker1,
-                CPQI: CntInCasepacker2,
+                //CPQIB: CntInCasepacker1,
+                //CPQI: CntInCasepacker2,
+                CPQI: Math.trunc(CntOutCasepacker/12),
+                //CPQO: CntOutCasepacker,
                 CPQO: CntOutCasepacker,
-                CPQR: CntRjCasepacker,
+                //CPQR: CntRjCasepacker,
                 SP: casepackerspeed
               }
               if (casepackerflagPrint == 1) {
-                /*for (var key in casepackerresults) {
+                for (var key in casepackerresults) {
                   if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
                   //NOTE: Cambiar path
                   fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n')
-                }*/
+                }
                 casepackerflagPrint = 0
                 casepackersecStop = 0
                 casepackertime = Date.now()
