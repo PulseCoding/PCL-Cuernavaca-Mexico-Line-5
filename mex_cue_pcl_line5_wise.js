@@ -677,10 +677,13 @@ function lectura(cappermaster) {
               SP: casepackerspeed
             }
             if (casepackerflagPrint == 1) {
+              console.log("Mensaje 1");
               for (var key in casepackerresults) {
-                if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
-                //NOTE: Cambiar path
-                fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
+                if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) ){
+                  //NOTE: Cambiar path
+                  console.log("Diego se la come!");
+                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
+                }
                 //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
               }
               casepackerflagPrint = 0
