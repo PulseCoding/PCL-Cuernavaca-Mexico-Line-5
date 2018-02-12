@@ -595,84 +595,65 @@ function lectura(cappermaster) {
     if (!err) {
       CntOutCasepacker = dataValue.value.value;
       //------------------------------------------casepacker----------------------------------------------
-          casepackerct = CntOutCasepacker; // NOTE: igualar al contador de salida
-            if (casepackerONS == 0 && casepackerct) {
-              casepackerspeedTemp = casepackerct;
-              casepackerONS = 1;
+            casepackerct = CntOutCasepacker // NOTE: igualar al contador de salida
+            if (!casepackerONS && casepackerct) {
+              casepackerspeedTemp = casepackerct
+              casepackersec = Date.now()
+              casepackerONS = true
+              casepackertime = Date.now()
             }
             if(casepackerct > casepackeractual){
               if(casepackerflagStopped){
-                casepackerspeed = casepackerct -casepackerspeedTemp;
-                casepackerspeedTemp = casepackerct;
-                casepackersec = 0;
+                casepackerspeed = casepackerct - casepackerspeedTemp
+                casepackerspeedTemp = casepackerct
+                casepackersec = Date.now()
+                casepackertime = Date.now()
               }
-              casepackersecStop = 0;
-              casepackersec++;
-              casepackertime = Date.now();
-              casepackerstate = 1;
-              casepackerflagStopped = false;
-              casepackerflagRunning = true;
+              casepackersecStop = 0
+              casepackerstate = 1
+              casepackerflagStopped = false
+              casepackerflagRunning = true
             } else if( casepackerct == casepackeractual ){
               if(casepackersecStop == 0){
-                casepackertime = Date.now();
+                casepackertime = Date.now()
+                casepackersecStop = Date.now()
               }
-              casepackersecStop++;
-              if(casepackersecStop >= casepackertimeStop){
-                casepackerspeed = 0;
-                casepackerstate = 2;
-                casepackerspeedTemp = casepackerct;
-                casepackerflagStopped = true;
-                casepackerflagRunning = false;
-              }
-/*
-              if(Casepackerestado == 2)
-                 {
-                  if ( Casepackerestado == 3)
-                  {
-                    Casepackerestado = 3;
-                  }
-                   if ( Casepackerestado == 4)
-                   {
-                     Casepackerestado = 4;
-                   }
-                 }*/
-              if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
-                casepackerflagPrint=1;
-
-                if(casepackersecStop%casepackertimeStop*3 == 0){
-                  casepackertime = Date.now();
-                }
+              if( ( Date.now() - ( casepackertimeStop * 1000 ) ) >= casepackersecStop ){
+                casepackerspeed = 0
+                casepackerstate = 2
+                casepackerspeedTemp = casepackerct
+                casepackerflagStopped = true
+                casepackerflagRunning = false
+                casepackerflagPrint = 1
               }
             }
-            casepackeractual = casepackerct;
-            if(casepackersec == casepackerWorktime){
-              casepackersec = 0;
+            casepackeractual = casepackerct
+            if(Date.now() - 60000 * casepackerWorktime >= casepackersec && casepackersecStop == 0){
               if(casepackerflagRunning && casepackerct){
-                casepackerflagPrint = 1;
-                casepackersecStop = 0;
-                casepackerspeed = casepackerct - casepackerspeedTemp;
-                casepackerspeedTemp = casepackerct;
+                casepackerflagPrint = 1
+                casepackersecStop = 0
+                casepackerspeed = casepackerct - casepackerspeedTemp
+                casepackerspeedTemp = casepackerct
+                casepackersec = Date.now()
               }
             }
+    if(casepackerspeed < 0)
+       {
+        casepackerspeed =0;
+       }
             casepackerresults = {
               ST: casepackerstate,
-              //CPQIB: CntInCasepacker1,
-              //CPQI: CntInCasepacker2,
-              //CPQI: CntOutCapper,
+              //CPQIB: CntIncasepacker1,
+              CPQI: CntOutCapper,
               CPQO: CntOutCasepacker,
-              //CPQO: Math.trunc(CntOutCapper/12),
-              //CPQR: CntRjCasepacker,
+              //CPQR: CntRjcasepacker,
               SP: casepackerspeed
             }
             if (casepackerflagPrint == 1) {
-              console.log("Mensaje 1");
               for (var key in casepackerresults) {
-                if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) ){
-                  //NOTE: Cambiar path
-                  console.log("Diego se la come!");
-                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
-                }
-                //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
+                if( casepackerresults[key] != null && ! isNaN(casepackerresults[key]) )
+                //NOTE: Cambiar path
+                fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n')
               }
               casepackerflagPrint = 0
               casepackersecStop = 0
