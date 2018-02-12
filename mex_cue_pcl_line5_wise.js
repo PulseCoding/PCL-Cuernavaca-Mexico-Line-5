@@ -639,15 +639,15 @@ function lectura(cappermaster) {
                 casepackerflagRunning = false;
               }
 
-              if(casepackerstate == 2)
+              if(Casepackerestado == 2)
                  {
                   if ( Casepackerestado == 3)
                   {
-                    casepackerstate = 3;
+                    Casepackerestado = 3;
                   }
                    if ( Casepackerestado == 4)
                    {
-                     casepackerstate = 4;
+                     Casepackerestado = 4;
                    }
                  }
               if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
