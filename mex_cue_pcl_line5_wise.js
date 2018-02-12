@@ -482,88 +482,7 @@ function lectura(cappermaster) {
                 cappertime = Date.now()
               }
         //------------------------------------------capper----------------------------------------------
-        //------------------------------------------casepacker----------------------------------------------
-            casepackerct = CntOutCapper;//CntOutCasepacker; // NOTE: igualar al contador de salida
-              if (casepackerONS == 0 && casepackerct) {
-                casepackerspeedTemp = casepackerct;
-                casepackerONS = 1;
-              }
-              if(casepackerct > casepackeractual){
-                if(casepackerflagStopped){
-                  casepackerspeed = casepackerct -casepackerspeedTemp;
-                  casepackerspeedTemp = casepackerct;
-                  casepackersec = 0;
-                }
-                casepackersecStop = 0;
-                casepackersec++;
-                casepackertime = Date.now();
-                casepackerstate = 1;
-                casepackerflagStopped = false;
-                casepackerflagRunning = true;
-              } else if( casepackerct == casepackeractual ){
-                if(casepackersecStop == 0){
-                  casepackertime = Date.now();
-                }
-                casepackersecStop++;
-                if(casepackersecStop >= casepackertimeStop){
-                  casepackerspeed = 0;
-                  casepackerstate = 2;
-                  casepackerspeedTemp = casepackerct;
-                  casepackerflagStopped = true;
-                  casepackerflagRunning = false;
-                }
 
-                if(casepackerstate == 2)
-                   {
-                    if ( Casepackerestado == 3)
-                    {
-                      casepackerstate = 3;
-                    }
-                     if ( Casepackerestado == 4)
-                     {
-                       casepackerstate = 4;
-                     }
-                   }
-                if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
-                  casepackerflagPrint=1;
-
-                  if(casepackersecStop%casepackertimeStop*3 == 0){
-                    casepackertime = Date.now();
-                  }
-                }
-              }
-              casepackeractual = casepackerct;
-              if(casepackersec == casepackerWorktime){
-                casepackersec = 0;
-                if(casepackerflagRunning && casepackerct){
-                  casepackerflagPrint = 1;
-                  casepackersecStop = 0;
-                  casepackerspeed = casepackerct - casepackerspeedTemp;
-                  casepackerspeedTemp = casepackerct;
-                }
-              }
-              casepackerresults = {
-                ST: casepackerstate,
-                //CPQIB: CntInCasepacker1,
-                //CPQI: CntInCasepacker2,
-                CPQI: CntOutCapper,
-                //CPQO: CntOutCasepacker,
-                CPQO: Math.trunc(CntOutCapper/12),
-                //CPQR: CntRjCasepacker,
-                SP: casepackerspeed
-              }
-              if (casepackerflagPrint == 1) {
-                for (var key in casepackerresults) {
-                  if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
-                  //NOTE: Cambiar path
-                  fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
-                  fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
-                }
-                casepackerflagPrint = 0
-                casepackersecStop = 0
-                casepackertime = Date.now()
-              }
-        //------------------------------------------casepacker----------------------------------------------
     }
   });
   //////////////////////////////////////////Casesorter/////////////////////////////////////////////////////////////////////
@@ -676,7 +595,7 @@ function lectura(cappermaster) {
 
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdOutCount", function(err, dataValue) {
     if (!err) {
-      //CntOutCasepacker = dataValue.value.value;
+      CntOutCasepacker = dataValue.value.value;
     }
   });
 
@@ -688,8 +607,89 @@ function lectura(cappermaster) {
   });
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
-      //Casepackerestado = dataValue.value.value;
+      Casepackerestado = dataValue.value.value;
+      //------------------------------------------casepacker----------------------------------------------
+          casepackerct = CntOutCapper;//CntOutCasepacker; // NOTE: igualar al contador de salida
+            if (casepackerONS == 0 && casepackerct) {
+              casepackerspeedTemp = casepackerct;
+              casepackerONS = 1;
+            }
+            if(casepackerct > casepackeractual){
+              if(casepackerflagStopped){
+                casepackerspeed = casepackerct -casepackerspeedTemp;
+                casepackerspeedTemp = casepackerct;
+                casepackersec = 0;
+              }
+              casepackersecStop = 0;
+              casepackersec++;
+              casepackertime = Date.now();
+              casepackerstate = 1;
+              casepackerflagStopped = false;
+              casepackerflagRunning = true;
+            } else if( casepackerct == casepackeractual ){
+              if(casepackersecStop == 0){
+                casepackertime = Date.now();
+              }
+              casepackersecStop++;
+              if(casepackersecStop >= casepackertimeStop){
+                casepackerspeed = 0;
+                casepackerstate = 2;
+                casepackerspeedTemp = casepackerct;
+                casepackerflagStopped = true;
+                casepackerflagRunning = false;
+              }
 
+              if(casepackerstate == 2)
+                 {
+                  if ( Casepackerestado == 3)
+                  {
+                    casepackerstate = 3;
+                  }
+                   if ( Casepackerestado == 4)
+                   {
+                     casepackerstate = 4;
+                   }
+                 }
+              if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
+                casepackerflagPrint=1;
+
+                if(casepackersecStop%casepackertimeStop*3 == 0){
+                  casepackertime = Date.now();
+                }
+              }
+            }
+            casepackeractual = casepackerct;
+            if(casepackersec == casepackerWorktime){
+              casepackersec = 0;
+              if(casepackerflagRunning && casepackerct){
+                casepackerflagPrint = 1;
+                casepackersecStop = 0;
+                casepackerspeed = casepackerct - casepackerspeedTemp;
+                casepackerspeedTemp = casepackerct;
+              }
+            }
+            casepackerresults = {
+              ST: casepackerstate,
+              //CPQIB: CntInCasepacker1,
+              //CPQI: CntInCasepacker2,
+              CPQI: CntOutCapper,
+              CPQO: CntOutCasepacker,
+              //CPQO: Math.trunc(CntOutCapper/12),
+              //CPQR: CntRjCasepacker,
+              SP: casepackerspeed
+            }
+            if (casepackerflagPrint == 1) {
+              for (var key in casepackerresults) {
+                if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
+                //NOTE: Cambiar path
+                fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
+                fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
+              }
+              casepackerflagPrint = 0
+              casepackersecStop = 0
+              casepackertime = Date.now()
+            }
+      //------------------------------------------casepacker----------------------------------------------
 
     }
   });
