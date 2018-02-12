@@ -414,8 +414,6 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + CapperStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
       Capperestado = dataValue.value.value;
-
-
         //------------------------------------------capper----------------------------------------------
               capperct = CntOutCapper // NOTE: igualar al contador de salida
               if (!capperONS && capperct) {
@@ -607,9 +605,9 @@ function lectura(cappermaster) {
   });
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerStatus + "MchStatus", function(err, dataValue) {
     if (!err) {
-      Casepackerestado = dataValue.value.value;
+    //  Casepackerestado = dataValue.value.value;
       //------------------------------------------casepacker----------------------------------------------
-          casepackerct = CntOutCapper;//CntOutCasepacker; // NOTE: igualar al contador de salida
+          casepackerct = CntOutCasepacker; // NOTE: igualar al contador de salida
             if (casepackerONS == 0 && casepackerct) {
               casepackerspeedTemp = casepackerct;
               casepackerONS = 1;
@@ -638,7 +636,7 @@ function lectura(cappermaster) {
                 casepackerflagStopped = true;
                 casepackerflagRunning = false;
               }
-
+/*
               if(Casepackerestado == 2)
                  {
                   if ( Casepackerestado == 3)
@@ -649,7 +647,7 @@ function lectura(cappermaster) {
                    {
                      Casepackerestado = 4;
                    }
-                 }
+                 }*/
               if(casepackersecStop%casepackertimeStop*3 == 0 ||casepackersecStop == casepackertimeStop ){
                 casepackerflagPrint=1;
 
@@ -683,7 +681,7 @@ function lectura(cappermaster) {
                 if( casepackerresults[key] != null && casepackerresults[key] != 0 && ! isNaN(casepackerresults[key]) )
                 //NOTE: Cambiar path
                 fs.appendFileSync('C:/PULSE/L5_LOGS/cue_pcl_casepacker_l5.log', 'tt=' + casepackertime + ',var=' + key + ',val=' + casepackerresults[key] + '\n');
-                fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
+                //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + Date.now() + ',var= EOL' + ',val=' + Math.trunc(CntOutCapper/12) + '\n');
               }
               casepackerflagPrint = 0
               casepackersecStop = 0
@@ -1256,7 +1254,7 @@ function lectura(cappermaster) {
 
       if (EOLflagPrint == 1) {
         //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + (CntInEOL1 + CntInEOL2) + '\n');
-        //fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + CntOutCasepacker + '\n');
+        fs.appendFileSync("C:/PULSE/L5_LOGS/cue_pcl_eol_l5.log", 'tt=' + EOLtime + ',var= EOL' + ',val=' + CntOutCasepacker + '\n');
         EOLflagPrint = 0;
       }
 
