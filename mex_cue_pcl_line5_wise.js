@@ -594,18 +594,6 @@ function lectura(cappermaster) {
   the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdOutCount", function(err, dataValue) {
     if (!err) {
       CntOutCasepacker = dataValue.value.value;
-    }
-  });
-
-  the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdRejCount", function(err, dataValue) {
-    if (!err) {
-      //CntRjCasepacker = dataValue.value.value;
-    }
-
-  });
-  the_session.readVariableValue("ns=2;" + canal + disp + CasepackerStatus + "MchStatus", function(err, dataValue) {
-    if (!err) {
-    //  Casepackerestado = dataValue.value.value;
       //------------------------------------------casepacker----------------------------------------------
           casepackerct = CntOutCasepacker; // NOTE: igualar al contador de salida
             if (casepackerONS == 0 && casepackerct) {
@@ -691,6 +679,19 @@ function lectura(cappermaster) {
               casepackertime = Date.now()
             }
       //------------------------------------------casepacker----------------------------------------------
+    }
+  });
+
+  the_session.readVariableValue("ns=2;" + canal + disp + CasepackerCounter + "ProdRejCount", function(err, dataValue) {
+    if (!err) {
+      //CntRjCasepacker = dataValue.value.value;
+    }
+
+  });
+  the_session.readVariableValue("ns=2;" + canal + disp + CasepackerStatus + "MchStatus", function(err, dataValue) {
+    if (!err) {
+    //  Casepackerestado = dataValue.value.value;
+
 
     }
   });
