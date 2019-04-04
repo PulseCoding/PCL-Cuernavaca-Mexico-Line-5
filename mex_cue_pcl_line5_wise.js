@@ -11,7 +11,7 @@ const fs = require('fs'),
 var opcua = require("node-opcua");
 var async = require("async");
 var client = new opcua.OPCUAClient();
-var endpointUrl = "opc.tcp://127.0.0.1:44818/UA/L5;" //Endpoint especificado en la configuración de OCP del KEPserver
+var endpointUrl = "opc.tcp://127.0.0.1:44818"; //Endpoint especificado en la configuración de OCP del KEPserver
 var the_session = null;
 
 
